@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWANAYA MEDIA ENTERPRISES - Command Center</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #050507;
+            color: #f3f4f6;
+        }
+        .terminal-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glow-btn:hover {
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0b0e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a855f7;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden">
+
+    <div id="landingPage" class="flex-grow flex flex-col items-center justify-center p-6 target:block">
+        <div class="max-w-4xl w-full bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute -top-24 -left-24 w-48 h-48 bg-purple-600/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-blue-600/10 rounded-full blur-3xl"></div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center border-b border-zinc-800 pb-6 mb-8 gap-4">
+                <div class="text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-400 to-purple-400">
+                        SWANAYA MEDIA ENTERPRISES
+                    </h1>
+                    <p class="text-xs text-purple-400 tracking-widest uppercase mt-1">Cinematic Production Ecosystem</p>
+                </div>
+                <div class="flex flex-col items-center md:items-end">
+                    <div id="liveClock" class="text-2xl font-bold text-zinc-100 terminal-font tracking-wider bg-zinc-950 px-4 py-2 rounded-xl border border-zinc-800">
+                        00:00:00 AM
+                    </div>
+                    <div class="mt-3 flex items-center gap-2">
+                        <label class="cursor-pointer bg-zinc-800 hover:bg-zinc-700 px-3 py-1 rounded text-xs transition">
+                            <i class="fa-solid fa-upload mr-1"></i> System Logo
+                            <input type="file" id="logoUpload" class="hidden" accept="image/*" onchange="handleLogoUpload(event)">
+                        </label>
+                        <div id="logoPreviewContainer" class="w-8 h-8 rounded bg-zinc-800 flex items-center justify-center overflow-hidden border border-zinc-700">
+                            <i class="fa-solid fa-clapperboard text-zinc-500 text-xs" id="defaultLogoIcon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <h2 class="text-lg font-semibold text-zinc-300 flex items-center gap-2">
+                        <i class="fa-brands fa-youtube text-red-500"></i> Media Stream Tester
+                    </h2>
+                    <div class="bg-zinc-950 rounded-2xl p-4 border border-zinc-800 space-y-3">
+                        <div class="flex gap-2">
+                            <input type="text" id="ytUrlInput" placeholder="Paste YouTube Video URL or ID" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-purple-500 text-zinc-100">
+                            <button onclick="loadYoutubeVideo()" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-xl text-sm font-semibold transition shrink-0">Load</button>
+                        </div>
+                        <div class="aspect-video w-full bg-zinc-900 rounded-xl border border-zinc-800 flex items-center justify-center overflow-hidden relative">
+                            <div id="ytPlaceholder" class="text-zinc-600 text-center p-4">
+                                <i class="fa-solid fa-play-circle text-4xl mb-2 block"></i>
+                                <span class="text-xs">No active video matrix loaded</span>
+                            </div>
+                            <iframe id="ytPlayer" class="w-full h-full hidden" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-purple-950/20 to-zinc-950 p-4 rounded-2xl border border-purple-900/30">
+                        <h3 class="text-xs font-semibold text-purple-400 uppercase tracking-wider mb-2">Campaign Broadcast Launch Engine</h3>
+                        <div class="flex items-center gap-3">
+                            <button onclick="triggerLaunchCountdown()" id="launchBtn" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 px-5 py-2.5 rounded-xl font-bold text-sm glow-btn transition flex items-center gap-2">
+                                <i class="fa-solid fa-rocket"></i> Launch Pipeline
+                            </button>
+                            <div id="countdownDisplay" class="hidden text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400 terminal-font bg-zinc-950 px-4 py-1.5 rounded-xl border border-zinc-800">
+                                T-MINUS 10
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-between">
+                    <div id="loginFormContainer" class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-lg font-semibold text-zinc-300 flex items-center gap-2">
+                                <i class="fa-solid fa-shield-halved text-purple-500"></i> Secure Node Access
+                            </h2>
+                            <button onclick="toggleAuthMode()" id="authToggleBtn" class="text-xs text-purple-400 hover:underline">Register New Admin</button>
+                        </div>
+
+                        <div class="bg-zinc-950/80 p-5 rounded-2xl border border-zinc-800 space-y-4 shadow-inner">
+                            <div>
+                                <label class="block text-xs text-zinc-400 mb-1 tracking-wide uppercase">Administrative Identifier</label>
+                                <input type="text" id="authUsername" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 terminal-font text-purple-300" placeholder="Username">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-zinc-400 mb-1 tracking-wide uppercase">Passkey / Access Token</label>
+                                <input type="password" id="authPassword" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 terminal-font text-purple-300" placeholder="••••••••••••">
+                            </div>
+                            <div class="pt-2 flex flex-col gap-2">
+                                <button onclick="authenticateGate()" class="w-full bg-zinc-100 hover:bg-white text-zinc-950 py-2.5 rounded-xl font-bold text-sm transition tracking-wider uppercase">
+                                    Authenticate Node
+                                </button>
+                                <button onclick="triggerResetPassword()" class="text-xs text-center text-zinc-500 hover:text-zinc-400 transition pt-1">
+                                    Forget credential configurations? Reset Key
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center text-zinc-600 text-[10px] tracking-widest uppercase pt-4 border-t border-zinc-900 mt-4">
+                        Authorized clearance required. Actions logged locally via node container.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="mainDashboard" class="hidden flex-grow flex flex-col">
+        <header class="bg-zinc-950 border-b border-zinc-800 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div id="dashboardLogoContainer" class="w-10 h-10 rounded-xl bg-purple-900/30 border border-purple-500/40 flex items-center justify-center overflow-hidden">
+                    </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-wider text-zinc-100">SWANAYA MEDIA ENTERPRISES</h1>
+                    <p class="text-[10px] text-zinc-500 tracking-widest uppercase font-semibold">Enterprise Core Framework v13.0</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-sm">
+                <div class="bg-zinc-900 px-3 py-1.5 rounded-xl border border-zinc-800 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs text-zinc-400 font-medium tracking-wide">Node: <span id="activeUserBadge" class="text-zinc-200">Aadithyan Menon</span></span>
+                </div>
+                <button onclick="terminateSession()" class="bg-red-950/40 text-red-400 hover:bg-red-900/40 border border-red-900/40 px-3 py-1.5 rounded-xl text-xs transition font-semibold">
+                    <i class="fa-solid fa-power-off mr-1"></i> Disconnect
+                </button>
+            </div>
+        </header>
+
+        <div class="flex-grow flex flex-col lg:flex-row">
+            <aside class="w-full lg:w-64 bg-zinc-950/60 border-b lg:border-b-0 lg:border-r border-zinc-800 p-4 flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible shrink-0">
+                <button onclick="switchTab('contentPlanner')" class="tab-btn w-full text-left px-4 py-3 rounded-xl bg-purple-600/10 border border-purple-500/30 text-purple-400 font-medium transition flex items-center gap-3 text-sm shrink-0">
+                    <i class="fa-solid fa-calendar-alt"></i> Entity Planner
+                </button>
+                <button onclick="switchTab('hrAttendance')" class="tab-btn w-full text-left px-4 py-3 rounded-xl text-zinc-400 border border-transparent hover:bg-zinc-900 hover:text-zinc-200 font-medium transition flex items-center gap-3 text-sm shrink-0">
+                    <i class="fa-solid fa-user-check"></i> HR Attendance
+                </button>
+                <button onclick="switchTab('marketingHub')" class="tab-btn w-full text-left px-4 py-3 rounded-xl text-zinc-400 border border-transparent hover:bg-zinc-900 hover:text-zinc-200 font-medium transition flex items-center gap-3 text-sm shrink-0">
+                    <i class="fa-solid fa-chart-line"></i> Marketing Sync
+                </button>
+                <button onclick="switchTab('adminTerminal')" class="tab-btn w-full text-left px-4 py-3 rounded-xl text-zinc-400 border border-transparent hover:bg-zinc-900 hover:text-zinc-200 font-medium transition flex items-center gap-3 text-sm shrink-0 terminal-font text-xs shrink-0">
+                    <i class="fa-solid fa-terminal"></i> root_terminal
+                </button>
+            </aside>
+
+            <main class="flex-grow p-6 overflow-y-auto max-w-[100vw] lg:max-w-none">
+                
+                <div id="contentPlannerTab" class="dashboard-tab space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-zinc-100 tracking-wide">Entity-Based Content Planner</h2>
+                            <p class="text-xs text-zinc-400 mt-0.5">Granular matrix engine syncing assignments with Git structures</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <button onclick="connectGithubMock()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 px-4 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-2">
+                                <i class="fa-brands fa-github text-base"></i> <span id="githubStatusBtn">Link Repo Structure</span>
+                            </button>
+                            <button onclick="downloadPlannerPDF()" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-purple-900/20">
+                                <i class="fa-solid fa-file-pdf"></i> Export Planner Blueprint
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
+                        <div>
+                            <label class="block text-[11px] uppercase tracking-wider text-zinc-500 mb-1 font-bold">Temporal Selector (Month)</label>
+                            <select id="planMonthSelect" onchange="renderCalendarEngine()" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-purple-500 text-zinc-200">
+                                <option value="0">January</option><option value="1">February</option><option value="2">March</option>
+                                <option value="3">April</option><option value="4">May</option><option value="5">June</option>
+                                <option value="6">July</option><option value="7">August</option><option value="8">September</option>
+                                <option value="9">October</option><option value="10">November</option><option value="11">December</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] uppercase tracking-wider text-zinc-500 mb-1 font-bold">Temporal Selector (Year)</label>
+                            <input type="number" id="planYearSelect" value="2026" onchange="renderCalendarEngine()" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-purple-500 text-zinc-200 text-center font-semibold">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] uppercase tracking-wider text-zinc-500 mb-1 font-bold">Active Working Entities</label>
+                            <select id="entityFilter" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-purple-500 text-zinc-200">
+                                <option value="all">All Enterprise Assets</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="openNewEntityModal()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-4 py-2 rounded-xl text-sm font-semibold transition border border-zinc-700 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-plus-circle text-purple-400"></i> Instantiate New Entity
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="pdfExportWrapper" class="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 space-y-4">
+                        <div class="flex justify-between items-center border-b border-zinc-900 pb-3">
+                            <h3 id="calendarHeadline" class="text-base font-bold text-zinc-300 uppercase tracking-widest">January 2026 Matrix Frame</h3>
+                            <span class="text-[10px] text-purple-400 border border-purple-900 bg-purple-950/50 px-2 py-0.5 rounded font-mono">LOCKED VIEW INTERACTIVE ACTIVE</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-zinc-500 uppercase tracking-widest">
+                            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                        </div>
+
+                        <div id="calendarGridEngine" class="grid grid-cols-7 gap-2">
+                            </div>
+                    </div>
+
+                    <div class="bg-zinc-950 p-5 rounded-2xl border border-zinc-800 space-y-4">
+                        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-wide flex items-center gap-2">
+                            <i class="fa-solid fa-clock-rotate-left text-zinc-500"></i> Global Activity Audit Log Matrix
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-zinc-400 border-collapse">
+                                <thead>
+                                    <tr class="border-b border-zinc-800 text-zinc-500 uppercase font-bold tracking-wider">
+                                        <th class="pb-2">Timestamp</th>
+                                        <th class="pb-2">Admin Host</th>
+                                        <th class="pb-2">Action Executed</th>
+                                        <th class="pb-2">System Target Node</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="activityLogRows" class="divide-y divide-zinc-900 terminal-font">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="hrAttendanceTab" class="dashboard-tab hidden space-y-6">
+                    <div class="border-b border-zinc-800 pb-4">
+                        <h2 class="text-2xl font-bold text-zinc-100 tracking-wide">Human Resource Deployment Module</h2>
+                        <p class="text-xs text-zinc-400 mt-0.5">Admin-locked resource tracking structure parameters</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-zinc-950 p-5 rounded-2xl border border-zinc-800 space-y-4">
+                            <h3 class="text-sm font-semibold text-zinc-300 uppercase tracking-wider">Clock Execution Node</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-xs text-zinc-500 mb-1">Asset Operational Name</label>
+                                    <input type="text" id="attendanceName" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-purple-500 text-zinc-100" placeholder="Operator Name">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-zinc-500 mb-1">Operational Role Parameter</label>
+                                    <select id="attendanceRole" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-purple-500 text-zinc-100">
+                                        <option value="Production Controller">Production Controller</option>
+                                        <option value="Software Division Head">Software Division Head</option>
+                                        <option value="Director Matrix">Director Matrix</option>
+                                        <option value="Content Coordinator">Content Coordinator</option>
+                                    </select>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 pt-2">
+                                    <button onclick="logAttendance('Clock In')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl text-xs transition uppercase tracking-wider">Clock In</button>
+                                    <button onclick="logAttendance('Clock Out')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold py-2 rounded-xl text-xs transition border border-zinc-700 uppercase tracking-wider">Clock Out</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-2 bg-zinc-950 p-5 rounded-2xl border border-zinc-800 space-y-4">
+                            <h3 class="text-sm font-semibold text-zinc-300 uppercase tracking-wider">Active Resource Roster Sync</h3>
+                            <div class="overflow-x-auto max-h-[300px]">
+                                <table class="w-full text-left text-xs border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-zinc-800 text-zinc-500 uppercase tracking-wider font-bold">
+                                            <th class="pb-2">Resource Agent</th>
+                                            <th class="pb-2">Role Asset</th>
+                                            <th class="pb-2">Action Node</th>
+                                            <th class="pb-2">Timestamp Tracked</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="attendanceLogRows" class="text-zinc-400 divide-y divide-zinc-900 terminal-font">
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="marketingHubTab" class="dashboard-tab hidden space-y-6">
+                    <div class="border-b border-zinc-800 pb-4">
+                        <h2 class="text-2xl font-bold text-zinc-100 tracking-wide">Enterprise Campaign & Marketing Sync</h2>
+                        <p class="text-xs text-zinc-400 mt-0.5">Advanced structural funnel logs and AI-augmented metric scaling vectors</p>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-indigo-950/40 via-purple-950/30 to-zinc-950 p-6 rounded-2xl border border-purple-900/40 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-purple-600/20 flex items-center justify-center text-purple-400"><i class="fa-solid fa-brain"></i></div>
+                                <div>
+                                    <h3 class="text-sm font-semibold text-zinc-200">Swanaya Core AI Strategy Vector Engine</h3>
+                                    <p class="text-xs text-zinc-400">Generates mathematical content delivery patterns using cross-entity trends</p>
+                                </div>
+                            </div>
+                            <span class="bg-purple-950 text-purple-400 text-[10px] px-2.5 py-1 rounded-full font-mono border border-purple-800">Advanced AI Core Activated</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                            <button onclick="runAiAnalysis('seo')" class="bg-zinc-900/80 hover:bg-zinc-900 text-left p-3 rounded-xl border border-zinc-800 hover:border-purple-500/50 transition group">
+                                <span class="block text-xs font-bold text-zinc-400 group-hover:text-purple-400 transition uppercase tracking-wider">SEO Intent Structuring</span>
+                                <span class="block text-[11px] text-zinc-500 mt-1">Parses organic keyword configurations directly into targeted node content assets.</span>
+                            </button>
+                            <button onclick="runAiAnalysis('social')" class="bg-zinc-900/80 hover:bg-zinc-900 text-left p-3 rounded-xl border border-zinc-800 hover:border-purple-500/50 transition group">
+                                <span class="block text-xs font-bold text-zinc-400 group-hover:text-purple-400 transition uppercase tracking-wider">Social Optimization Vector</span>
+                                <span class="block text-[11px] text-zinc-500 mt-1">Calculates scheduling velocities to hit max algorithms across target endpoints.</span>
+                            </button>
+                            <button onclick="runAiAnalysis('conversion')" class="bg-zinc-900/80 hover:bg-zinc-900 text-left p-3 rounded-xl border border-zinc-800 hover:border-purple-500/50 transition group">
+                                <span class="block text-xs font-bold text-zinc-400 group-hover:text-purple-400 transition uppercase tracking-wider">Lead Generation Optimization</span>
+                                <span class="block text-[11px] text-zinc-500 mt-1">Identifies client acquisition strategies using algorithmic content parameters.</span>
+                            </button>
+                        </div>
+                        <div id="aiResponseFrame" class="hidden bg-zinc-950 p-4 rounded-xl border border-zinc-800 text-xs text-purple-300 font-mono leading-relaxed">
+                            </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-zinc-950 p-5 rounded-2xl border border-zinc-800 space-y-4">
+                            <h3 class="text-sm font-semibold text-zinc-300 uppercase tracking-wider">Campaign Funnel Input</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-xs text-zinc-500 mb-1">Campaign Tag Name</label>
+                                    <input type="text" id="mktCampaignName" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-purple-500 text-zinc-100" placeholder="e.g., Summer Film Promo">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-zinc-500 mb-1">Target Strategy Funnel channel</label>
+                                    <select id="mktChannel" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-purple-500 text-zinc-100">
+                                        <option value="Meta Sponsored Matrix">Meta Sponsored Matrix</option>
+                                        <option value="Google Search Optimization">Google Search Optimization</option>
+                                        <option value="Organic Short Form Loop">Organic Short Form Loop</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-zinc-500 mb-1">Allocated Budget Metrics</label>
+                                    <input type="text" id="mktBudget" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-purple-500 text-zinc-100" placeholder="e.g., INR 25,000 / Dynamic">
+                                </div>
+                                <button onclick="logMarketingCampaign()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded-xl text-xs transition uppercase tracking-wider pt-2">Commit Campaign Strategy</button>
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-2 bg-zinc-950 p-5 rounded-2xl border border-zinc-800 space-y-4">
+                            <h3 class="text-sm font-semibold text-zinc-300 uppercase tracking-wider">Active Marketing Funnels Configured</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-zinc-800 text-zinc-500 uppercase tracking-wider font-bold">
+                                            <th class="pb-2">Campaign Element</th>
+                                            <th class="pb-2">Channel Matrix</th>
+                                            <th class="pb-2">Allocation Matrix</th>
+                                            <th class="pb-2">Execution Pipeline Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="marketingLogsContainer" class="text-zinc-400 divide-y divide-zinc-900 terminal-font">
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="adminTerminalTab" class="dashboard-tab hidden space-y-4">
+                    <div class="border-b border-zinc-800 pb-2">
+                        <h2 class="text-lg font-bold text-zinc-100 font-mono">swanaya_root@system_core:~</h2>
+                        <p class="text-xs text-zinc-500">Full-scale browser interactive direct system terminal matrix shell console.</p>
+                    </div>
+
+                    <div class="w-full bg-zinc-950 rounded-2xl border border-zinc-800 p-4 terminal-font text-xs flex flex-col h-[450px] shadow-inner">
+                        <div id="terminalScreenReadout" class="flex-grow overflow-y-auto space-y-1 text-zinc-400 pb-4 select-text">
+                            <div class="text-zinc-600">SWANAYA ENTERPRISES SECURE NETWORK DEPLOYMENT v13.0</div>
+                            <div class="text-zinc-600">Initializing Local Node Storage Syncing Array hooks... Successful.</div>
+                            <div class="text-purple-400">Type 'help' to print list of executive operational commands available.</div>
+                        </div>
+                        
+                        <div class="flex items-center border-t border-zinc-800 pt-3 text-emerald-400 shrink-0">
+                            <span class="mr-2 shrink-0">swanaya_core_node_#</span>
+                            <input type="text" id="terminalConsoleCommandInput" class="flex-grow bg-transparent border-none outline-none text-zinc-100 focus:ring-0 p-0" onkeydown="handleTerminalCommandExecution(event)" autofocus autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+
+    <div id="assignContentModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
+        <div class="bg-zinc-950 border border-zinc-800 max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-zinc-900 pb-2">
+                <h3 class="text-base font-bold text-zinc-200">Schedule Video Asset Assignment</h3>
+                <button onclick="closeContentAssignmentModal()" class="text-zinc-500 hover:text-zinc-300 text-lg"><i class="fa-solid fa-times-circle"></i></button>
+            </div>
+            <input type="hidden" id="targetModalDayIndex">
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">Video Segment / Campaign Title</label>
+                    <input type="text" id="modalVideoTitle" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-purple-500" placeholder="e.g., Short Film Asset Cut #2">
+                </div>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">Target Production Asset Entity Group</label>
+                    <select id="modalEntitySelector" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-purple-500">
+                        </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">Assigned Operational Coordinator</label>
+                    <input type="text" id="modalCoordinator" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-purple-500" placeholder="Operator Node Asset Name">
+                </div>
+                <button onclick="commitAssignedContentToCalendarArray()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 rounded-xl text-sm transition uppercase tracking-wider pt-2">Link Strategy to Matrix Cell</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="newEntityInstantiationModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-zinc-950 border border-zinc-800 max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-zinc-900 pb-2">
+                <h3 class="text-base font-bold text-zinc-200">Instantiate Production Entity Asset</h3>
+                <button onclick="closeNewEntityModal()" class="text-zinc-500 hover:text-zinc-300 text-lg"><i class="fa-solid fa-times-circle"></i></button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">Unique Corporate Entity Tag Code</label>
+                    <input type="text" id="newEntityNameInput" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-purple-500" placeholder="e.g., HyperBeast_Media_Unit">
+                </div>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">Entity Domain Vertical</label>
+                    <select id="newEntityCategoryInput" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-purple-500">
+                        <option value="Short Film Pipeline">Short Film Pipeline</option>
+                        <option value="Social Micro-Content Asset">Social Micro-Content Asset</option>
+                        <option value="Corporate Brand Strategy">Corporate Brand Strategy</option>
+                    </select>
+                </div>
+                <button onclick="commitNewEntityToStorageArray()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 rounded-xl text-sm transition uppercase tracking-wider pt-2">Register Asset Array Hook</button>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="bg-zinc-950 border-t border-zinc-900 px-6 py-3 text-center text-zinc-600 text-[11px] tracking-wide font-medium flex flex-col sm:flex-row justify-between items-center gap-2">
+        <div>&copy; 2026 SWANAYA MEDIA ENTERPRISES. Engineering Framework Sandbox Build v13.0.</div>
+        <div class="flex gap-4 items-center terminal-font text-purple-500/70">
+            <span>Storage Stack: LOCAL_STG_V13</span>
+            <span>Auth Matrix: PASSED</span>
+        </div>
+    </footer>
+
+
+    <script>
+        // Data Schema and Initial Mock Registries
+        let systemDatabaseState = {
+            activeSessionUser: null,
+            isRegistrationMode: false,
+            githubConnected: false,
+            customLogoBase64: null,
+            entitiesListArray: ["The Hyper Beast's Heart Team", "Chai with Aadi Core", "Metaverse In Tourism Production Hub"],
+            calendarAssignmentsMatrix: {}, // Key formatted as 'YYYY-MM-DD' -> array of event models
+            globalAuditActivityLogs: [
+                { time: "2026-06-26 10:00:12", host: "SYSTEM_DAEMON", act: "Initialized Swanaya Enterprise Local Node Engine", node: "CORE_ENG" }
+            ],
+            hrAttendanceRosterLogs: [
+                { name: "Naveen Krishna V", role: "Software Division Head", action: "Clock In", timestamp: "2026-06-26 09:15:33" },
+                { name: "Soummer Sadik", role: "Production Controller", action: "Clock In", timestamp: "2026-06-26 09:22:11" }
+            ],
+            marketingCampaignFunnels: [
+                { name: "Meta Lead Capture Array A", channel: "Meta Sponsored Matrix", budget: "INR 15,000", status: "Active Execution" }
+            ],
+            administrativeCredentialRegistry: {
+                "AADITHYAN MENON": "AADITHYAN MENON" // Master key configuration requested explicitly
+            }
+        };
+
+        // Initialize Application Node Sequence Hooks
+        window.addEventListener('DOMContentLoaded', () => {
+            loadApplicationStateFromStorageContainer();
+            initializeLiveDynamicClockModule();
+            renderCalendarEngine();
+            synchronizeDropdownMenusWithEntities();
+            updateActivityLogDataTables();
+            updateAttendanceDataTables();
+            updateMarketingDataTables();
+        });
+
+        // Local Storage Component Syncer Core Engines
+        function saveApplicationStateToStorageContainer() {
+            localStorage.setItem('swanaya_enterprise_state_v13', JSON.stringify(systemDatabaseState));
+        }
+
+        function loadApplicationStateFromStorageContainer() {
+            const cachedDataBlock = localStorage.getItem('swanaya_enterprise_state_v13');
+            if (cachedDataBlock) {
+                try {
+                    const parsedStructure = JSON.parse(cachedDataBlock);
+                    systemDatabaseState = { ...systemDatabaseState, ...parsedStructure };
+                    // Persist authentication persistence boundaries across soft structural resets
+                    if (systemDatabaseState.activeSessionUser) {
+                        bypassAuthGatewayToDashboardPanel();
+                    }
+                    if (systemDatabaseState.customLogoBase64) {
+                        applyCustomLogoToContainers(systemDatabaseState.customLogoBase64);
+                    }
+                } catch (e) {
+                    console.error("Local schema validation failed. Reverting to memory database default maps.", e);
+                }
+            }
+        }
+
+        // Live Clock Tick Driver Configuration Engine
+        function initializeLiveDynamicClockModule() {
+            const clockTargetNode = document.getElementById('liveClock');
+            setInterval(() => {
+                const nativeDateObject = new Date();
+                let temporalHours = nativeDateObject.getHours();
+                const temporalMinutes = String(nativeDateObject.getMinutes()).padStart(2, '0');
+                const temporalSeconds = String(nativeDateObject.getSeconds()).padStart(2, '0');
+                const clockMeridiemAmPmMarker = temporalHours >= 12 ? 'PM' : 'AM';
+                
+                temporalHours = temporalHours % 12;
+                temporalHours = temporalHours ? temporalHours : 12; // Handle absolute hour 0 configuration
+                const dynamicFormattedString = `${String(temporalHours).padStart(2, '0')}:${temporalMinutes}:${temporalSeconds} ${clockMeridiemAmPmMarker}`;
+                
+                if (clockTargetNode) clockTargetNode.textContent = dynamicFormattedString;
+            }, 1000);
+        }
+
+        // Gate Gateway Authentication Switcher Logic UI States Handler
+        function toggleAuthMode() {
+            systemDatabaseState.isRegistrationMode = !systemDatabaseState.isRegistrationMode;
+            const titleNode = document.querySelector('#loginFormContainer h2');
+            const toggleBtn = document.getElementById('authToggleBtn');
+            const submitBtn = document.querySelector('#loginFormContainer button[onclick="authenticateGate()"]');
+
+            if (systemDatabaseState.isRegistrationMode) {
+                titleNode.innerHTML = `<i class="fa-solid fa-user-plus text-purple-500"></i> Provision Admin Node`;
+                toggleBtn.textContent = "Return to Access Node Login";
+                submitBtn.textContent = "Register & Cache Credentials";
+            } else {
+                titleNode.innerHTML = `<i class="fa-solid fa-shield-halved text-purple-500"></i> Secure Node Access`;
+                toggleBtn.textContent = "Register New Admin";
+                submitBtn.textContent = "Authenticate Node";
+            }
+        }
+
+        function authenticateGate() {
+            const userIn = document.getElementById('authUsername').value.trim();
+            const passIn = document.getElementById('authPassword').value.trim();
+
+            if (!userIn || !passIn) {
+                alert("Core Operational Failure: Execution inputs cannot be empty nodes.");
+                return;
+            }
+
+            if (systemDatabaseState.isRegistrationMode) {
+                // Register sequence loop logic flow
+                if (systemDatabaseState.administrativeCredentialRegistry[userIn]) {
+                    alert("Authentication Error: Node configuration identifier already exists in cache mapping.");
+                    return;
+                }
+                systemDatabaseState.administrativeCredentialRegistry[userIn] = passIn;
+                appendSystemActivityLog(userIn, "Provisioned Admin Credentials Array", "AUTH_REGISTRY");
+                alert(`Success: Admin credentials node mapped securely for [ ${userIn} ]. Reverting layout framework.`);
+                toggleAuthMode();
+                saveApplicationStateToStorageContainer();
+            } else {
+                // Login validation loops logic checks step
+                if (systemDatabaseState.administrativeCredentialRegistry[userIn] && systemDatabaseState.administrativeCredentialRegistry[userIn] === passIn) {
+                    systemDatabaseState.activeSessionUser = userIn;
+                    appendSystemActivityLog(userIn, "Authenticated System Control Gateway Session", "AUTH_GATEWAY");
+                    saveApplicationStateToStorageContainer();
+                    bypassAuthGatewayToDashboardPanel();
+                } else {
+                    alert("ACCESS DENIED: Credentials verification index payload mismatch.");
+                }
+            }
+        }
+
+        function bypassAuthGatewayToDashboardPanel() {
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('mainDashboard').classList.remove('hidden');
+            document.getElementById('activeUserBadge').textContent = systemDatabaseState.activeSessionUser;
+            
+            // Sync custom elements inside admin dashboard panel spaces
+            if (systemDatabaseState.customLogoBase64) {
+                applyCustomLogoToContainers(systemDatabaseState.customLogoBase64);
+            }
+        }
+
+        function terminateSession() {
+            appendSystemActivityLog(systemDatabaseState.activeSessionUser || "UNKNOWN", "Disconnected Operational Session Core", "AUTH_GATEWAY");
+            systemDatabaseState.activeSessionUser = null;
+            saveApplicationStateToStorageContainer();
+            document.getElementById('mainDashboard').classList.add('hidden');
+            document.getElementById('landingPage').classList.remove('hidden');
+            document.getElementById('authUsername').value = "";
+            document.getElementById('authPassword').value = "";
+        }
+
+        function triggerResetPassword() {
+            const promptUser = prompt("Enter the Admin Username identity node configuration target to reset passkey structure verification logic value for:");
+            if (!promptUser) return;
+            if (systemDatabaseState.administrativeCredentialRegistry[promptUser]) {
+                const newPass = prompt(`Provide replacement credential parameters string payload value for admin identity profile: [ ${promptUser} ]`);
+                if (newPass && newPass.trim().length > 0) {
+                    systemDatabaseState.administrativeCredentialRegistry[promptUser] = newPass.trim();
+                    appendSystemActivityLog("SYSTEM_DAEMON", `Reset structural verification key indices for user reference: ${promptUser}`, "AUTH_REGISTRY");
+                    saveApplicationStateToStorageContainer();
+                    alert("Credential matrix transformation update committed cleanly.");
+                }
+            } else {
+                alert("Target Identity sequence mismatch. No matching admin node array mapped to that selector input value configuration.");
+            }
+        }
+
+        // Custom System Base64 Logo Rendering Engine Array Pipeline Utilities
+        function handleLogoUpload(event) {
+            const uploadFileTargetElementReference = event.target.files[0];
+            if (!uploadFileTargetElementReference) return;
+            
+            const standardFileReaderEngineInstance = new FileReader();
+            standardFileReaderEngineInstance.onload = function(e) {
+                const dataUrlResultString = e.target.result;
+                systemDatabaseState.customLogoBase64 = dataUrlResultString;
+                saveApplicationStateToStorageContainer();
+                applyCustomLogoToContainers(dataUrlResultString);
+            };
+            standardFileReaderEngineInstance.readAsDataURL(uploadFileTargetElementReference);
+        }
+
+        function applyCustomLogoToContainers(base64String) {
+            const landingPreview = document.getElementById('logoPreviewContainer');
+            const dashboardPreview = document.getElementById('dashboardLogoContainer');
+
+            const inlineImgHtmlPayload = `<img src="${base64String}" class="w-full h-full object-cover" alt="Swanaya Custom Logo">`;
+            if (landingPreview) landingPreview.innerHTML = inlineImgHtmlPayload;
+            if (dashboardPreview) dashboardPreview.innerHTML = inlineImgHtmlPayload;
+        }
+
+        // Media Stream Testing Embed Loading Logic Implementation
+        function loadYoutubeVideo() {
+            const userRawUrlValueStringInput = document.getElementById('ytUrlInput').value.trim();
+            const playerIframeElementNode = document.getElementById('ytPlayer');
+            const placeholderCardElementNode = document.getElementById('ytPlaceholder');
+
+            if (!userRawUrlValueStringInput) return;
+
+            let structuralVideoIdExtractionOutput = userRawUrlValueStringInput;
+            // Basic extraction syntax parsing regex loop engine logic step implementation verification
+            if (userRawUrlValueStringInput.includes('v=')) {
+                structuralVideoIdExtractionOutput = userRawUrlValueStringInput.split('v=')[1].split('&')[0];
+            } else if (userRawUrlValueStringInput.includes('youtu.be/')) {
+                structuralVideoIdExtractionOutput = userRawUrlValueStringInput.split('youtu.be/')[1].split('?')[0];
+            }
+
+            if (structuralVideoIdExtractionOutput) {
+                placeholderCardElementNode.classList.add('hidden');
+                playerIframeElementNode.classList.remove('hidden');
+                playerIframeElementNode.src = `https://www.youtube.com/embed/${structuralVideoIdExtractionOutput}`;
+                appendSystemActivityLog("GUEST_SANDBOX", `Loaded YouTube Video Matrix Element Instance [ ${structuralVideoIdExtractionOutput} ]`, "MEDIA_STREAM");
+            }
+        }
+
+        // Cinematic Launch 10-1 Ratio Countdown Processor Pipeline Driver Execution
+        function triggerLaunchCountdown() {
+            const btn = document.getElementById('launchBtn');
+            const countDisplay = document.getElementById('countdownDisplay');
+            let counterTickerIndexDecrementValue = 10;
+
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            countDisplay.classList.remove('hidden');
+            countDisplay.textContent = `T-MINUS ${counterTickerIndexDecrementValue}`;
+
+            const loopingIntervalCountdownTickerDriverRef = setInterval(() => {
+                counterTickerIndexDecrementValue--;
+                if (counterTickerIndexDecrementValue > 0) {
+                    countDisplay.textContent = `T-MINUS ${counterTickerIndexDecrementValue}`;
+                } else {
+                    clearInterval(loopingIntervalCountdownTickerDriverRef);
+                    countDisplay.textContent = "BROADCAST ONLINE";
+                    countDisplay.classList.remove('from-red-400', 'to-orange-400');
+                    countDisplay.classList.add('from-emerald-400', 'to-teal-400');
+                    appendSystemActivityLog("LAUNCH_ENGINE", "Executed live media operational deployment sequence loop vector.", "MARKETING_BROADCAST");
+                    
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        countDisplay.classList.add('hidden');
+                        countDisplay.classList.remove('from-emerald-400', 'to-teal-400');
+                        countDisplay.classList.add('from-red-400', 'to-orange-400');
+                    }, 4000);
+                }
+            }, 1000); // Ticking execution interval matching 1:1 operational time standard scales
+        }
+
+        // App View Navigation Switch Matrix Controller
+        function switchTab(targetDashboardTabIdentityStringId) {
+            document.querySelectorAll('.dashboard-tab').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-600/10', 'border-purple-500/30', 'text-purple-400');
+                btn.classList.add('text-zinc-400', 'border-transparent');
+            });
+
+            const activeTabTargetHtmlContainerBlock = document.getElementById(`${targetDashboardTabIdentityStringId}Tab`);
+            if (activeTabTargetHtmlContainerBlock) activeTabTargetHtmlContainerBlock.classList.remove('hidden');
+
+            const actionButtonElementTriggerRef = document.querySelector(`button[onclick="switchTab('${targetDashboardTabIdentityStringId}')"]`);
+            if (actionButtonElementTriggerRef) {
+                actionButtonElementTriggerRef.classList.remove('text-zinc-400', 'border-transparent');
+                actionButtonElementTriggerRef.classList.add('bg-purple-600/10', 'border-purple-500/30', 'text-purple-400');
+            }
+        }
+
+        // Entity Framework Lists Maintenance Array Processing Control Elements
+        function synchronizeDropdownMenusWithEntities() {
+            const filterMenu = document.getElementById('entityFilter');
+            const modalMenu = document.getElementById('modalEntitySelector');
+            
+            // Retain default first options structure configuration layouts templates safely
+            filterMenu.innerHTML = `<option value="all">All Enterprise Assets</option>`;
+            modalMenu.innerHTML = '';
+
+            systemDatabaseState.entitiesListArray.forEach(entity => {
+                const optionA = document.createElement('option');
+                optionA.value = entity;
+                optionA.textContent = entity;
+                filterMenu.appendChild(optionA);
+
+                const optionB = document.createElement('option');
+                optionB.value = entity;
+                optionB.textContent = entity;
+                modalMenu.appendChild(optionB);
+            });
+        }
+
+        function openNewEntityModal() { document.getElementById('newEntityInstantiationModal').classList.remove('hidden'); }
+        function closeNewEntityModal() { document.getElementById('newEntityInstantiationModal').classList.add('hidden'); }
+
+        function commitNewEntityToStorageArray() {
+            const nameIn = document.getElementById('newEntityNameInput').value.trim();
+            if (!nameIn) return;
+
+            if (systemDatabaseState.entitiesListArray.includes(nameIn)) {
+                alert("Operation Aborted: Entity array target descriptor mapping space collision detected.");
+                return;
+            }
+
+            systemDatabaseState.entitiesListArray.push(nameIn);
+            appendSystemActivityLog(systemDatabaseState.activeSessionUser, `Instantiated and Registered Entity Model Matrix Hook: [ ${nameIn} ]`, "ENTITY_ENGINE");
+            saveApplicationStateToStorageContainer();
+            synchronizeDropdownMenusWithEntities();
+            closeNewEntityModal();
+            document.getElementById('newEntityNameInput').value = "";
+        }
+
+        // Calendar Grid System Calculation Engines Architecture Block
+        function renderCalendarEngine() {
+            const gridContainerElementRef = document.getElementById('calendarGridEngine');
+            const trackingHeadlineLabelRef = document.getElementById('calendarHeadline');
+            
+            const selectedMonthIndexVal = parseInt(document.getElementById('planMonthSelect').value);
+            const selectedYearNumericVal = parseInt(document.getElementById('planYearSelect').value);
+
+            const monthsLabelsIndexMap = [
+                "January", "February", "March", "April", "May", "June", 
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+            trackingHeadlineLabelRef.textContent = `${monthsLabelsIndexMap[selectedMonthIndexVal]} ${selectedYearNumericVal} Structural Matrix Frame`;
+            gridContainerElementRef.innerHTML = '';
+
+            // Compute first day boundaries sequence configurations
+            const firstDayOfWeekIndexOffset = new Date(selectedYearNumericVal, selectedMonthIndexVal, 1).getDay();
+            const absoluteDaysInMonthCount = new Date(selectedYearNumericVal, selectedMonthIndexVal + 1, 0).getDate();
+
+            // Insert matching structural alignment empty block grid cells spacing sequences cleanly
+            for (let e = 0; e < firstDayOfWeekIndexOffset; e++) {
+                const blankMatrixCellNode = document.createElement('div');
+                blankMatrixCellNode.className = "bg-zinc-950/20 border border-zinc-900/40 rounded-xl min-h-[90px] opacity-20";
+                gridContainerElementRef.appendChild(blankMatrixCellNode);
+            }
+
+            // Loop generation render sequence formatting arrays
+            for (let dayIndexMarker = 1; dayIndexMarker <= absoluteDaysInMonthCount; dayIndexMarker++) {
+                const structuralIsoDateStringKey = `${selectedYearNumericVal}-${String(selectedMonthIndexVal + 1).padStart(2, '0')}-${String(dayIndexMarker).padStart(2, '0')}`;
+                
+                const dayCellNodeCardWrapper = document.createElement('div');
+                dayCellNodeCardWrapper.className = "bg-zinc-900/60 border border-zinc-800 rounded-xl p-2 min-h-[95px] hover:border-purple-500/40 transition flex flex-col justify-between group cursor-pointer relative";
+                dayCellNodeCardWrapper.setAttribute('onclick', `triggerCellAssignmentWorkflowModal('${structuralIsoDateStringKey}')`);
+
+                const dayNumericIndicatorLabel = document.createElement('span');
+                dayNumericIndicatorLabel.className = "text-xs font-bold text-zinc-500 group-hover:text-purple-400 transition font-mono";
+                dayNumericIndicatorLabel.textContent = dayIndexMarker;
+                dayCellNodeCardWrapper.appendChild(dayNumericIndicatorLabel);
+
+                // Check and render mapped entities assignments lists structures tracking
+                const activeEventsListForDay = systemDatabaseState.calendarAssignmentsMatrix[structuralIsoDateStringKey] || [];
+                if (activeEventsListForDay.length > 0) {
+                    const stackWrapperContainer = document.createElement('div');
+                    stackWrapperContainer.className = "space-y-1 my-1 overflow-hidden flex-grow flex flex-col justify-end";
+                    
+                    activeEventsListForDay.forEach(eventItem => {
+                        const segmentPillNode = document.createElement('div');
+                        segmentPillNode.className = "text-[9px] bg-purple-950 border border-purple-800/60 text-purple-300 rounded px-1.5 py-0.5 truncate max-w-full font-medium";
+                        segmentPillNode.title = `${eventItem.title} [${eventItem.entity}]`;
+                        segmentPillNode.textContent = eventItem.title;
+                        stackWrapperContainer.appendChild(segmentPillNode);
+                    });
+                    dayCellNodeCardWrapper.appendChild(stackWrapperContainer);
+                }
+
+                const actionHoverHintLabelIcon = document.createElement('div');
+                actionHoverHintLabelIcon.className = "absolute bottom-1 right-1 text-[10px] text-zinc-600 opacity-0 group-hover:opacity-100 transition";
+                actionHoverHintLabelIcon.innerHTML = `<i class="fa-solid fa-plus-circle text-purple-500"></i>`;
+                dayCellNodeCardWrapper.appendChild(actionHoverHintLabelIcon);
+
+                gridContainerElementRef.appendChild(dayCellNodeCardWrapper);
+            }
+        }
+
+        function triggerCellAssignmentWorkflowModal(dateStringKey) {
+            document.getElementById('targetModalDayIndex').value = dateStringKey;
+            document.getElementById('assignContentModal').classList.remove('hidden');
+        }
+        function closeContentAssignmentModal() { document.getElementById('assignContentModal').classList.add('hidden'); }
+
+        function commitAssignedContentToCalendarArray() {
+            const targetedKeyStringDateIso = document.getElementById('targetModalDayIndex').value;
+            const assetTitleStringVal = document.getElementById('modalVideoTitle').value.trim();
+            const entityMappedDropdownSelection = document.getElementById('modalEntitySelector').value;
+            const coordinatorStringNameValue = document.getElementById('modalCoordinator').value.trim();
+
+            if (!assetTitleStringVal || !coordinatorStringNameValue) {
+                alert("Incomplete Parameter Matrix: Provide valid title and operations coordinator strings.");
+                return;
+            }
+
+            if (!systemDatabaseState.calendarAssignmentsMatrix[targetedKeyStringDateIso]) {
+                systemDatabaseState.calendarAssignmentsMatrix[targetedKeyStringDateIso] = [];
+            }
+
+            systemDatabaseState.calendarAssignmentsMatrix[targetedKeyStringDateIso].push({
+                title: assetTitleStringVal,
+                entity: entityMappedDropdownSelection,
+                coordinator: coordinatorStringNameValue
+            });
+
+            appendSystemActivityLog(systemDatabaseState.activeSessionUser, `Assigned content block [ ${assetTitleStringVal} ] to structural temporal node vector ${targetedKeyStringDateIso}`, "PLANNER_ENGINE");
+            saveApplicationStateToStorageContainer();
+            renderCalendarEngine();
+            closeContentAssignmentModal();
+
+            // Clear entry vectors inputs clean for subsequent workflow processes executions
+            document.getElementById('modalVideoTitle').value = "";
+            document.getElementById('modalCoordinator').value = "";
+        }
+
+        // Mock GitHub Integration Control Sequence Systems
+        function connectGithubMock() {
+            systemDatabaseState.githubConnected = !systemDatabaseState.githubConnected;
+            const targetBtnLabelNodeText = document.getElementById('githubStatusBtn');
+            if (systemDatabaseState.githubConnected) {
+                targetBtnLabelNodeText.textContent = "Repo Stream Connected";
+                targetBtnLabelNodeText.parentElement.classList.remove('border-zinc-700');
+                targetBtnLabelNodeText.parentElement.classList.add('border-emerald-500/50', 'text-emerald-400');
+                appendSystemActivityLog(systemDatabaseState.activeSessionUser, "Linked active content production workspace arrays tracking vectors with master branch ecosystem hooks", "GITHUB_SYNC");
+            } else {
+                targetBtnLabelNodeText.textContent = "Link Repo Structure";
+                targetBtnLabelNodeText.parentElement.classList.remove('border-emerald-500/50', 'text-emerald-400');
+                targetBtnLabelNodeText.parentElement.classList.add('border-zinc-700');
+                appendSystemActivityLog(systemDatabaseState.activeSessionUser, "Severed repository stream parameters link array structural references", "GITHUB_SYNC");
+            }
+            saveApplicationStateToStorageContainer();
+        }
+
+        // PDF Generation Framework Automation Driver Execution Hooks
+        function downloadPlannerPDF() {
+            appendSystemActivityLog(systemDatabaseState.activeSessionUser, "Compiled and exported system localized monthly strategic operations calendar ledger to PDF structure blueprint", "PDF_ENGINE");
+            
+            const optimizationExportTargetContainerHtmlRef = document.getElementById('pdfExportWrapper');
+            const layoutOptionsConfigPayload = {
+                margin: 0.2,
+                filename: `Swanaya_Media_Content_Planner_Export_${document.getElementById('planMonthSelect').value}_2026.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, backgroundColor: '#050507', useCORS: true },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+            };
+            
+            html2pdf().set(layoutOptionsConfigPayload).from(optimizationExportTargetContainerHtmlRef).save();
+        }
+
+        // HR & Attendance Metrics Operations Drivers Data Logging Logic Form Processing
+        function logAttendance(actionDirectionString) {
+            const operatorNameInputString = document.getElementById('attendanceName').value.trim();
+            const assignmentRoleValueNodeStr = document.getElementById('attendanceRole').value;
+
+            if (!operatorNameInputString) {
+                alert("Operation Aborted: Operator signature payload cannot resolve empty.");
+                return;
+            }
+
+            const currentTimestampGenStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+            
+            systemDatabaseState.hrAttendanceRosterLogs.unshift({
+                name: operatorNameInputString,
+                role: assignmentRoleValueNodeStr,
+                action: actionDirectionString,
+                timestamp: currentTimestampGenStr
+            });
+
+            appendSystemActivityLog(systemDatabaseState.activeSessionUser, `HR Module logged [ ${actionDirectionString} ] action event descriptor instance for operational specialist agent: ${operatorNameInputString}`, "HR_ATTENDANCE");
+            saveApplicationStateToStorageContainer();
+            updateAttendanceDataTables();
+            document.getElementById('attendanceName').value = "";
+        }
+
+        // Marketing Campaign Core Logging Engine Logic Flow Setup Verification
+        function logMarketingCampaign() {
+            const name = document.getElementById('mktCampaignName').value.trim();
+            const channel = document.getElementById('mktChannel').value;
+            const budget = document.getElementById('mktBudget').value.trim();
+
+            if (!name || !budget) {
+                alert("Invalid configuration matrix inputs. Validate campaign descriptive entries strings values.");
+                return;
+            }
+
+            systemDatabaseState.marketingCampaignFunnels.unshift({
+                name: name,
+                channel: channel,
+                budget: budget,
+                status: "Active Execution"
+            });
+
+            appendSystemActivityLog(systemDatabaseState.activeSessionUser, `Committed tactical optimization funnel deployment pipeline array vector under tag reference tracking label: [ ${name} ]`, "MARKETING_SYNC");
+            saveApplicationStateToStorageContainer();
+            updateMarketingDataTables();
+            
+            document.getElementById('mktCampaignName').value = "";
+            document.getElementById('mktBudget').value = "";
+        }
+
+        // AI Feature Strategy Mock Engine Generative Readout Sequences Simulator
+        function runAiAnalysis(strategyTypeTagStringKey) {
+            const monitoringDisplayConsoleRefBlockNode = document.getElementById('aiResponseFrame');
+            monitoringDisplayConsoleRefBlockNode.classList.remove('hidden');
+            monitoringDisplayConsoleRefBlockNode.textContent = "Executing deep spatial matrix predictive array calculations... Correlating entity tracking logs data stacks...";
+
+            setTimeout(() => {
+                let strategyInsightStringPayloadTextOutput = "";
+                if (strategyTypeTagStringKey === 'seo') {
+                    strategyInsightStringPayloadTextOutput = `[SWANAYA AI INSIGHT] > High-velocity cluster validation indicates content optimization fields containing 'Metaverse Tourism Experience' and 'Production Operations Engine' show a mathematical density shift vector scaling +42% efficiency metrics if deployed concurrently inside the first 7 days quadrant frame cycles.`;
+                } else if (strategyTypeTagStringKey === 'social') {
+                    strategyInsightStringPayloadTextOutput = `[SWANAYA AI INSIGHT] > Algorithm profiling arrays indicate optimization parameters hit terminal mass index value curves if content pieces corresponding to 'The Hyper Beast's Heart' tracking sequences deploy on standard interval metrics at 18:45:00 UTC temporal slots matching regional activity log nodes peaks.`;
+                } else if (strategyTypeTagStringKey === 'conversion') {
+                    strategyInsightStringPayloadTextOutput = `[SWANAYA AI INSIGHT] > Algorithmic evaluation suggests dynamic tracking templates shift modern client response matrices from a 10:1 ratio framework tracking matrix structures directly up into highly specialized conversion velocities scaling closer to 4.2:1 ratios upon deploying clear interactive PDF blueprints.`;
+                }
+                monitoringDisplayConsoleRefBlockNode.textContent = strategyInsightStringPayloadTextOutput;
+                appendSystemActivityLog("CORE_AI_ENGINE", `Executed analytical predictive algorithm synthesis vector matrix calculation pass for operational query type: [ ${strategyTypeTagStringKey} ]`, "AI_COGNITION");
+            }, 1200);
+        }
+
+        // Dynamic System Audit Log Generation Array Insertion Block Utilities
+        function appendSystemActivityLog(hostSignature, actionsDoneText, moduleCategoryNode) {
+            const calculatedStringTimestampNow = new Date().toISOString().replace('T', ' ').substring(0, 19);
+            systemDatabaseState.globalAuditActivityLogs.unshift({
+                time: calculatedStringTimestampNow,
+                host: hostSignature || "SYSTEM_KERN_DAEMON",
+                act: actionsDoneText,
+                node: moduleCategoryNode
+            });
+            updateActivityLogDataTables();
+        }
+
+        // Data Tables Synchronization View Injections Elements Loops Updates Architecture
+        function updateActivityLogDataTables() {
+            const bodyRef = document.getElementById('activityLogRows');
+            if (!bodyRef) return;
+            bodyRef.innerHTML = '';
+            // Render maximum slice count boundaries matching UI view limits frames specifications parameters safely
+            systemDatabaseState.globalAuditActivityLogs.slice(0, 15).forEach(log => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td class="py-1.5 pr-2 text-zinc-600">${log.time}</td>
+                                <td class="py-1.5 px-2 text-purple-400 font-semibold">${log.host}</td>
+                                <td class="py-1.5 px-2 text-zinc-300">${log.act}</td>
+                                <td class="py-1.5 pl-2 text-zinc-500 font-mono text-[10px]">[${log.node}]</td>`;
+                bodyRef.appendChild(tr);
+            });
+        }
+
+        function updateAttendanceDataTables() {
+            const bodyRef = document.getElementById('attendanceLogRows');
+            if (!bodyRef) return;
+            bodyRef.innerHTML = '';
+            systemDatabaseState.hrAttendanceRosterLogs.forEach(row => {
+                const tr = document.createElement('tr');
+                const badgeStyleColorIndexClass = row.action === 'Clock In' ? 'text-emerald-400 bg-emerald-950/40 border-emerald-900' : 'text-zinc-400 bg-zinc-900 border-zinc-800';
+                tr.innerHTML = `<td class="py-2 font-bold text-zinc-200">${row.name}</td>
+                                <td class="py-2 text-zinc-400">${row.role}</td>
+                                <td class="py-2"><span class="px-2 py-0.5 rounded text-[10px] border font-bold uppercase tracking-wider ${badgeStyleColorIndexClass}">${row.action}</span></td>
+                                <td class="py-2 text-zinc-500">${row.timestamp}</td>`;
+                bodyRef.appendChild(tr);
+            });
+        }
+
+        function updateMarketingDataTables() {
+            const bodyRef = document.getElementById('marketingLogsContainer');
+            if (!bodyRef) return;
+            bodyRef.innerHTML = '';
+            systemDatabaseState.marketingCampaignFunnels.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td class="py-2 font-bold text-zinc-200">${row.name}</td>
+                                <td class="py-2 text-purple-400">${row.channel}</td>
+                                <td class="py-2 text-zinc-400 font-mono">${row.budget}</td>
+                                <td class="py-2"><span class="text-xs text-emerald-400 bg-emerald-950/20 border border-emerald-900/60 px-2 py-0.5 rounded-full font-mono">${row.status}</span></td>`;
+                bodyRef.appendChild(tr);
+            });
+        }
+
+        // Interactive Full Scale Browser Embedded Shell Terminal Simulation Mechanism Processor
+        function handleTerminalCommandExecution(eventInputTriggerEventKey) {
+            if (eventInputTriggerEventKey.key !== 'Enter') return;
+
+            const terminalInputElementBoxRef = document.getElementById('terminalConsoleCommandInput');
+            const outputReadoutWindowBoxRef = document.getElementById('terminalScreenReadout');
+            const targetUserRawInputStringTextValue = terminalInputElementBoxRef.value.trim();
+
+            if (!targetUserRawInputInputStringTextValue) return;
+
+            // Render echo row
+            const shellEchoRowLineNode = document.createElement('div');
+            shellEchoRowLineNode.innerHTML = `<span class="text-emerald-500">swanaya_core_node_#</span> <span class="text-white">${targetUserRawInputStringTextValue}</span>`;
+            outputReadoutWindowBoxRef.appendChild(shellEchoRowLineNode);
+
+            const executionTokenizerArrayParameters = targetUserRawInputStringTextValue.toLowerCase().split(' ');
+            const masterCommandRootKeywordStringToken = executionTokenizerArrayParameters[0];
+
+            const commandOutputSystemLogWrapperBlockDivNode = document.createElement('div');
+            commandOutputSystemLogWrapperBlockDivNode.className = "pl-4 text-zinc-400 leading-relaxed py-1";
+
+            switch (masterCommandRootKeywordStringToken) {
+                case 'help':
+                    commandOutputSystemLogWrapperBlockDivNode.innerHTML = `Available Core Command Execution Hooks Syntax Map:<br>
+                    &nbsp;&nbsp;<span class="text-purple-400">status</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Dumps structural counts of local runtime database objects.<br>
+                    &nbsp;&nbsp;<span class="text-purple-400">entity list</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Prints array values inside registered assets models.<br>
+                    &nbsp;&nbsp;<span class="text-purple-400">clear</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Wipes terminal line element rows rendering space stack.<br>
+                    &nbsp;&nbsp;<span class="text-purple-400">ai-optimize</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Forces global background analysis calculation processing pass.`;
+                    break;
+                case 'status':
+                    commandOutputSystemLogWrapperBlockDivNode.innerHTML = `[LOCAL STACK STATS DESCRIPTOR DATA LOOKUP]<br>
+                    &nbsp;&nbsp;Registered Admins Total Count : ${Object.keys(systemDatabaseState.administrativeCredentialRegistry).length}<br>
+                    &nbsp;&nbsp;Active Entities Registered Array Count : ${systemDatabaseState.entitiesListArray.length}<br>
+                    &nbsp;&nbsp;Calendar Assignment Map Entries : ${Object.keys(systemDatabaseState.calendarAssignmentsMatrix).length}<br>
+                    &nbsp;&nbsp;Current Authentication Session Owner Identity : ${systemDatabaseState.activeSessionUser || 'UNBOUND'}`;
+                    break;
+                case 'clear':
+                    outputReadoutWindowBoxRef.innerHTML = '';
+                    terminalInputElementBoxRef.value = '';
+                    return;
+                case 'ai-optimize':
+                    commandOutputSystemLogWrapperBlockDivNode.className = "pl-4 text-emerald-400 font-mono";
+                    commandOutputSystemLogWrapperBlockDivNode.innerHTML = `>>> SUCCESS: Broadcast scaling models synchronized via 10:1 algorithms logic checks. No syntax pipeline tracking leaks found. System optimized to current calendar year: 2026.`;
+                    appendSystemActivityLog("TERMINAL_SHELL", "Triggered global terminal ai-optimize operational pass hook directly.", "SYSTEM_CORE");
+                    break;
+                case 'entity':
+                    if (executionTokenizerArrayParameters[1] === 'list') {
+                        let entitiesListStringCollectionMarkupLineJoin = systemDatabaseState.entitiesListArray.map(item => `&nbsp;&nbsp;• [ ${item} ]`).join('<br>');
+                        commandOutputSystemLogWrapperBlockDivNode.innerHTML = `Active Registered System Level Framework Entities:<br>${entitiesListStringCollectionMarkupLineJoin}`;
+                    } else {
+                        commandOutputSystemLogWrapperBlockDivNode.textContent = "Unknown sub-parameter configuration token keyword. Did you mean 'entity list'?";
+                    }
+                    break;
+                default:
+                    commandOutputSystemLogWrapperBlockDivNode.className = "pl-4 text-red-400 font-mono";
+                    commandOutputSystemLogWrapperBlockDivNode.textContent = `Command Core Failure: Syntax token keyword definition reference link '[ ${masterCommandRootKeywordStringToken} ]' cannot be evaluated by local node array kernel environment logic layers maps rules.`;
+                    break;
+            }
+
+            outputReadoutWindowBoxRef.appendChild(commandOutputSystemLogWrapperBlockDivNode);
+            terminalInputElementBoxRef.value = '';
+            outputReadoutWindowBoxRef.scrollTop = outputReadoutWindowBoxRef.scrollHeight;
+        }
+    </script>
+</body>
+</html>

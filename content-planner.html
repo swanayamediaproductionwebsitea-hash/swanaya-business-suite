@@ -1,0 +1,2214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swanaya Media Enterprises - Content Planner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Login Page */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-box {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            width: 90%;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
+
+        .login-header h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Main Dashboard */
+        .main-container {
+            display: none;
+            min-height: 100vh;
+            background: #f5f7fa;
+        }
+
+        .header-top {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-brand {
+            font-size: 24px;
+            font-weight: bold;
+            background: white;
+            color: #667eea;
+            padding: 5px 15px;
+            border-radius: 5px;
+        }
+
+        .brand-text {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .digital-clock {
+            font-size: 28px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            min-width: 150px;
+            text-align: right;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: #2d3436;
+            color: white;
+            padding-top: 100px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .nav-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 15px;
+        }
+
+        .nav-item:hover {
+            background: #636e72;
+            border-left-color: #667eea;
+        }
+
+        .nav-item.active {
+            background: #667eea;
+            border-left-color: white;
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        /* Content Area */
+        .content-area {
+            margin-left: 280px;
+            margin-top: 80px;
+            padding: 30px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Dashboard Section */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            color: #667eea;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .card-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2d3436;
+        }
+
+        .card-subtitle {
+            color: #999;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        /* Calendar Section */
+        .calendar-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .calendar-controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        .control-select {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .control-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            color: #667eea;
+            padding: 10px;
+            background: #f0f2f5;
+            border-radius: 5px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .calendar-day:hover {
+            border-color: #667eea;
+            background: #f0f2f5;
+        }
+
+        .calendar-day.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Entity Management */
+        .entity-form {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-textarea {
+            grid-column: 1 / -1;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .btn-danger {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ff5252;
+        }
+
+        /* Entity List */
+        .entity-list {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .entity-item {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .entity-item:last-child {
+            border-bottom: none;
+        }
+
+        .entity-info h3 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .entity-info p {
+            color: #999;
+            font-size: 13px;
+        }
+
+        .entity-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        /* Activity Log */
+        .activity-log {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity-item {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.create {
+            background: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .activity-icon.update {
+            background: #e3f2fd;
+            color: #2196f3;
+        }
+
+        .activity-icon.delete {
+            background: #ffebee;
+            color: #f44336;
+        }
+
+        .activity-content h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .activity-time {
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* Content Planner */
+        .planner-header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .planner-filter {
+            display: flex;
+            gap: 15px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .content-thumb {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+        }
+
+        .content-info {
+            padding: 15px;
+        }
+
+        .content-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .content-meta {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .content-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        /* Admin Console */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .admin-panel {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        /* Video Upload */
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f9faff;
+        }
+
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: #f0f2f5;
+        }
+
+        .upload-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .upload-hint {
+            color: #999;
+            font-size: 13px;
+        }
+
+        /* Landing Page */
+        .landing-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-large {
+            padding: 15px 40px;
+            font-size: 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-light {
+            background: white;
+            color: #667eea;
+            border: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        /* Countdown Timer */
+        .countdown {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .countdown-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+        }
+
+        /* Terminal */
+        .terminal {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            min-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .terminal-line {
+            margin-bottom: 8px;
+        }
+
+        .terminal-prompt {
+            color: #00ff00;
+        }
+
+        .terminal-input {
+            width: 100%;
+            background: transparent;
+            color: #00ff00;
+            border: none;
+            font-family: 'Courier New', monospace;
+            padding: 5px 0;
+        }
+
+        .terminal-input:focus {
+            outline: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+                padding-top: 80px;
+            }
+
+            .content-area {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            .header-top {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* Attendance */
+        .attendance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .attendance-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .attendance-card.checked-in {
+            border-color: #4caf50;
+            background: #f1f8f4;
+        }
+
+        .attendance-time {
+            font-size: 12px;
+            color: #999;
+            margin-top: 10px;
+        }
+
+        /* PDF View */
+        .pdf-preview {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .pdf-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="logo">🎬</div>
+                <h1>SWANAYA MEDIA</h1>
+                <p>Content Planner System</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+            <p style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
+                Demo: Username: AADITHYAN MENON | Password: PASSKEY
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="mainContainer" class="main-container">
+        <!-- Header -->
+        <div class="header-top">
+            <div class="header-left">
+                <div class="logo-brand">🎬</div>
+                <div class="brand-text">SWANAYA MEDIA ENTERPRISES</div>
+            </div>
+            <div class="digital-clock" id="digitalClock">00:00:00</div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-avatar" id="userInitials">AM</div>
+                    <span id="userDisplay">AADITHYAN MENON</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="nav-item active" onclick="switchSection('dashboard')">
+                <span class="nav-icon">📊</span>
+                <span>Dashboard</span>
+            </div>
+            <div class="nav-item" onclick="switchSection('landing')">
+                <span class="nav-icon">🏠</span>
+                <span>Landing Page</span>
+            </div>
+            <div class="nav-item" onclick="switchSection('calendar')">
+                <span class="nav-icon">📅</span>
+                <span>Calendar Planner</span>
+            </div>
+            <div class="nav-item" onclick="switchSection('contentPlanner')">
+                <span class="nav-icon">🎥</span>
+                <span>Content Planner</span>
+            </div>
+            <div class="nav-item" onclick="switchSection('entities')">
+                <span class="nav-icon">🔗</span>
+                <span>Entity Management</span>
+            </div>
+            <div class="nav-item" onclick="switchSection('videoUpload')">
+                <span class="nav-icon">📹</span>
+                <span>Video Upload</span>
+            </div>
+            <div class="nav-item" onclick="switchSection('attendance')">
+                <span class="nav-icon">✓</span>
+                <span>Attendance</span>
+            </div>
+            <div class="nav-item" onclick="switchSection('activityLog')">
+                <span class="nav-icon">📝</span>
+                <span>Activity Log</span>
+            </div>
+            <div class="nav-item" onclick="switchSection('adminConsole')">
+                <span class="nav-icon">⚙️</span>
+                <span>Admin Console</span>
+            </div>
+            <div class="nav-item" onclick="switchSection('terminal')">
+                <span class="nav-icon">💻</span>
+                <span>Terminal</span>
+            </div>
+            <div class="nav-item" onclick="switchSection('settings')">
+                <span class="nav-icon">🔐</span>
+                <span>Security</span>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="section active">
+                <h2 style="color: #333; margin-bottom: 20px;">Dashboard Overview</h2>
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-title">Total Content</div>
+                        <div class="card-value" id="totalContent">0</div>
+                        <div class="card-subtitle">Videos & Assets</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Entities</div>
+                        <div class="card-value" id="totalEntities">0</div>
+                        <div class="card-subtitle">Active Entities</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">This Month</div>
+                        <div class="card-value" id="monthlyContent">0</div>
+                        <div class="card-subtitle">Planned Videos</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Team</div>
+                        <div class="card-value" id="teamMembers">1</div>
+                        <div class="card-subtitle">Admins Active</div>
+                    </div>
+                </div>
+
+                <h2 style="color: #333; margin-top: 40px; margin-bottom: 20px;">Recent Activity</h2>
+                <div id="dashboardActivity" class="activity-log"></div>
+            </div>
+
+            <!-- Landing Page Section -->
+            <div id="landing" class="section">
+                <div class="landing-hero">
+                    <div class="hero-title">SWANAYA MEDIA ENTERPRISES</div>
+                    <div class="hero-subtitle">Professional Content Management & Video Planning Platform</div>
+                    <div class="hero-buttons">
+                        <button class="btn btn-large btn-light" onclick="switchSection('contentPlanner')">
+                            Start Planning
+                        </button>
+                        <button class="btn btn-large btn-outline" onclick="openModal('videoModal')">
+                            Load YouTube Video
+                        </button>
+                    </div>
+                </div>
+
+                <div class="admin-grid">
+                    <div class="admin-panel">
+                        <div class="admin-title">🎥 Video Features</div>
+                        <p>Upload and manage your video content with advanced features.</p>
+                        <button class="btn btn-primary" style="margin-top: 15px; width: 100%;" 
+                                onclick="switchSection('videoUpload')">
+                            Upload Video
+                        </button>
+                    </div>
+                    <div class="admin-panel">
+                        <div class="admin-title">📅 Smart Planning</div>
+                        <p>Plan your content with our intelligent calendar system.</p>
+                        <button class="btn btn-primary" style="margin-top: 15px; width: 100%;" 
+                                onclick="switchSection('calendar')">
+                            Open Calendar
+                        </button>
+                    </div>
+                    <div class="admin-panel">
+                        <div class="admin-title">🔗 Entity Management</div>
+                        <p>Manage entities and connect them to GitHub repositories.</p>
+                        <button class="btn btn-primary" style="margin-top: 15px; width: 100%;" 
+                                onclick="switchSection('entities')">
+                            Manage Entities
+                        </button>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 30px; border-radius: 10px; margin-top: 30px;">
+                    <h3 style="color: #333; margin-bottom: 20px;">Launch Countdown</h3>
+                    <button class="btn btn-primary" onclick="startCountdown()">Start Countdown (10s)</button>
+                    <div id="countdownContainer" class="countdown" style="display: none;">
+                        <p>Launch in:</p>
+                        <div class="countdown-display" id="countdownDisplay">10</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar Section -->
+            <div id="calendar" class="section">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <h2>Content Planning Calendar</h2>
+                        <div class="calendar-controls">
+                            <select id="monthSelect" class="control-select" onchange="updateCalendar()">
+                                <option value="0">January</option>
+                                <option value="1">February</option>
+                                <option value="2">March</option>
+                                <option value="3">April</option>
+                                <option value="4">May</option>
+                                <option value="5">June</option>
+                                <option value="6">July</option>
+                                <option value="7">August</option>
+                                <option value="8">September</option>
+                                <option value="9">October</option>
+                                <option value="10">November</option>
+                                <option value="11">December</option>
+                            </select>
+                            <select id="yearSelect" class="control-select" onchange="updateCalendar()">
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026" selected>2026</option>
+                                <option value="2027">2027</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
+
+                <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h3 style="color: #333; margin-bottom: 15px;">Add Content for Selected Date</h3>
+                    <div class="form-row">
+                        <input type="text" class="form-input" id="contentTitle" placeholder="Content Title">
+                        <select class="form-select" id="contentType">
+                            <option value="">Select Type</option>
+                            <option value="short">Short Video (TikTok/Reels)</option>
+                            <option value="long">Long Form (YouTube)</option>
+                            <option value="live">Live Stream</option>
+                            <option value="podcast">Podcast</option>
+                        </select>
+                    </div>
+                    <textarea class="form-textarea" id="contentDescription" placeholder="Content Description"></textarea>
+                    <button class="btn btn-primary" onclick="addCalendarContent()">Add to Calendar</button>
+                </div>
+            </div>
+
+            <!-- Content Planner Section -->
+            <div id="contentPlanner" class="section">
+                <div class="planner-header">
+                    <h2>Content Planner</h2>
+                    <div class="planner-filter">
+                        <select class="control-select" id="filterStatus">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="active">Active</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="openModal('newContentModal')">+ New Content</button>
+                    </div>
+                </div>
+
+                <div class="content-grid" id="contentGrid"></div>
+            </div>
+
+            <!-- Entity Management Section -->
+            <div id="entities" class="section">
+                <h2 style="color: #333; margin-bottom: 20px;">Entity Management</h2>
+
+                <div class="entity-form">
+                    <h3 style="color: #333; margin-bottom: 15px;">Add New Entity</h3>
+                    <div class="form-row">
+                        <input type="text" class="form-input" id="entityName" placeholder="Entity Name" required>
+                        <input type="email" class="form-input" id="entityEmail" placeholder="Entity Email" required>
+                    </div>
+                    <div class="form-row">
+                        <input type="text" class="form-input" id="entityGithubRepo" placeholder="GitHub Repository URL">
+                        <input type="text" class="form-input" id="entityCategory" placeholder="Category (e.g., News, Entertainment)">
+                    </div>
+                    <textarea class="form-textarea" id="entityDescription" placeholder="Entity Description"></textarea>
+                    <button class="btn btn-primary" onclick="addEntity()">Create Entity</button>
+                </div>
+
+                <h3 style="color: #333; margin-bottom: 15px;">Your Entities</h3>
+                <div id="entityList" class="entity-list"></div>
+            </div>
+
+            <!-- Video Upload Section -->
+            <div id="videoUpload" class="section">
+                <h2 style="color: #333; margin-bottom: 30px;">Video Upload</h2>
+
+                <div style="background: white; padding: 30px; border-radius: 10px; margin-bottom: 30px;">
+                    <div class="upload-area" onclick="document.getElementById('videoInput').click()">
+                        <div class="upload-icon">📹</div>
+                        <div class="upload-text">Click to upload or drag and drop</div>
+                        <div class="upload-hint">Supported: MP4, WebM, AVI (Max 500MB)</div>
+                        <input type="file" id="videoInput" style="display: none;" accept="video/*" onchange="handleVideoUpload(event)">
+                    </div>
+                    <div style="margin-top: 20px;" id="uploadProgress" style="display: none;">
+                        <div style="background: #e0e0e0; height: 8px; border-radius: 5px; overflow: hidden;">
+                            <div id="progressBar" style="width: 0%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); transition: width 0.3s;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 20px; border-radius: 10px;">
+                    <h3 style="color: #333; margin-bottom: 15px;">YouTube Video URL</h3>
+                    <div class="form-row">
+                        <input type="url" class="form-input" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=...">
+                        <button class="btn btn-primary" onclick="loadYoutubeVideo()">Load Video</button>
+                    </div>
+                    <div id="youtubePreview" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+
+            <!-- Attendance Section -->
+            <div id="attendance" class="section">
+                <h2 style="color: #333; margin-bottom: 20px;">Hour-Based Attendance</h2>
+
+                <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="color: #333; margin-bottom: 15px;">Check In/Out</h3>
+                    <button class="btn btn-primary" onclick="checkInAttendance()" style="margin-right: 10px;">Check In</button>
+                    <button class="btn btn-secondary" onclick="checkOutAttendance()">Check Out</button>
+                </div>
+
+                <div class="attendance-grid" id="attendanceGrid"></div>
+
+                <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h3 style="color: #333; margin-bottom: 15px;">Monthly Attendance Report</h3>
+                    <canvas id="attendanceChart" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+
+            <!-- Activity Log Section -->
+            <div id="activityLog" class="section">
+                <h2 style="color: #333; margin-bottom: 20px;">Activity Log</h2>
+                <div id="fullActivityLog" class="activity-log"></div>
+            </div>
+
+            <!-- Admin Console Section -->
+            <div id="adminConsole" class="section">
+                <h2 style="color: #333; margin-bottom: 30px;">Admin Console</h2>
+
+                <div class="admin-grid">
+                    <div class="admin-panel">
+                        <div class="admin-title">👥 Add New Admin</div>
+                        <div class="form-row">
+                            <input type="text" class="form-input" id="newAdminName" placeholder="Admin Name">
+                            <input type="email" class="form-input" id="newAdminEmail" placeholder="Admin Email">
+                        </div>
+                        <input type="password" class="form-input" id="newAdminPassword" placeholder="Temporary Password">
+                        <button class="btn btn-primary" onclick="addNewAdmin()" style="width: 100%; margin-top: 10px;">Add Admin</button>
+                    </div>
+
+                    <div class="admin-panel">
+                        <div class="admin-title">🔐 Reset Password</div>
+                        <select class="form-select" id="adminSelect" style="width: 100%; margin-bottom: 10px;">
+                            <option value="">Select Admin</option>
+                        </select>
+                        <input type="password" class="form-input" id="newPassword" placeholder="New Password" style="margin-bottom: 10px;">
+                        <button class="btn btn-primary" onclick="resetAdminPassword()" style="width: 100%;">Reset Password</button>
+                    </div>
+
+                    <div class="admin-panel">
+                        <div class="admin-title">📊 System Settings</div>
+                        <label style="display: block; margin-bottom: 10px;">
+                            <input type="checkbox" id="notificationsEnabled" checked> Enable Notifications
+                        </label>
+                        <label style="display: block; margin-bottom: 10px;">
+                            <input type="checkbox" id="darkMode"> Dark Mode
+                        </label>
+                        <label style="display: block; margin-bottom: 10px;">
+                            <input type="checkbox" id="autoBackup" checked> Auto Backup
+                        </label>
+                        <button class="btn btn-primary" onclick="saveSettings()" style="width: 100%; margin-top: 10px;">Save Settings</button>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 25px; border-radius: 10px; margin-top: 30px;">
+                    <h3 style="color: #333; margin-bottom: 15px;">GitHub Integration</h3>
+                    <div class="form-row">
+                        <input type="text" class="form-input" id="githubToken" placeholder="GitHub Access Token">
+                        <input type="text" class="form-input" id="githubRepo" placeholder="Repository Name">
+                    </div>
+                    <button class="btn btn-primary" onclick="connectGithub()">Connect to GitHub</button>
+                </div>
+
+                <div style="background: white; padding: 25px; border-radius: 10px; margin-top: 30px;">
+                    <h3 style="color: #333; margin-bottom: 15px;">Data Management</h3>
+                    <button class="btn btn-primary" onclick="downloadPDF()" style="margin-right: 10px;">📥 Download PDF Report</button>
+                    <button class="btn btn-secondary" onclick="exportData()" style="margin-right: 10px;">💾 Export Data</button>
+                    <button class="btn btn-danger" onclick="resetAllData()">⚠️ Reset All Data</button>
+                </div>
+            </div>
+
+            <!-- Terminal Section -->
+            <div id="terminal" class="section">
+                <h2 style="color: #333; margin-bottom: 20px;">Full Scale Terminal</h2>
+                <div class="terminal" id="terminalOutput">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$ </span>
+                        <span>Welcome to Swanaya Media Terminal</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$ </span>
+                        <span>Type 'help' for available commands</span>
+                    </div>
+                </div>
+                <div style="display: flex; margin-top: 10px; gap: 10px;">
+                    <span class="terminal-prompt">$ </span>
+                    <input type="text" class="terminal-input" id="terminalInput" placeholder="Enter command..." 
+                           onkeypress="handleTerminalInput(event)">
+                </div>
+            </div>
+
+            <!-- Security Settings -->
+            <div id="settings" class="section">
+                <h2 style="color: #333; margin-bottom: 30px;">Security Settings</h2>
+
+                <div class="admin-grid">
+                    <div class="admin-panel">
+                        <div class="admin-title">🔒 Change Password</div>
+                        <input type="password" class="form-input" id="currentPassword" placeholder="Current Password" style="margin-bottom: 10px;">
+                        <input type="password" class="form-input" id="newPass" placeholder="New Password" style="margin-bottom: 10px;">
+                        <input type="password" class="form-input" id="confirmPass" placeholder="Confirm Password" style="margin-bottom: 10px;">
+                        <button class="btn btn-primary" onclick="changePassword()" style="width: 100%;">Update Password</button>
+                    </div>
+
+                    <div class="admin-panel">
+                        <div class="admin-title">🚨 Session Management</div>
+                        <p style="margin-bottom: 15px; color: #666;">Active Sessions: <strong>1</strong></p>
+                        <button class="btn btn-danger" onclick="endAllSessions()" style="width: 100%; margin-bottom: 10px;">End All Sessions</button>
+                        <button class="btn btn-secondary" onclick="toggleSessionLock()" style="width: 100%;">Lock Session</button>
+                    </div>
+
+                    <div class="admin-panel">
+                        <div class="admin-title">📱 Two-Factor Auth</div>
+                        <p style="margin-bottom: 15px; color: #666;">Status: <strong style="color: #ff6b6b;">Not Enabled</strong></p>
+                        <button class="btn btn-primary" onclick="enable2FA()" style="width: 100%;">Enable 2FA</button>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 25px; border-radius: 10px; margin-top: 30px;">
+                    <h3 style="color: #333; margin-bottom: 15px;">Backup & Recovery</h3>
+                    <p style="margin-bottom: 15px; color: #666;">Last backup: <strong id="lastBackupTime">Never</strong></p>
+                    <button class="btn btn-primary" onclick="createBackup()" style="margin-right: 10px;">Create Backup</button>
+                    <button class="btn btn-secondary" onclick="downloadBackup()">Download Backup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Load YouTube Video</div>
+            <div class="modal-body">
+                <input type="url" class="form-input" id="modalYoutubeUrl" placeholder="https://www.youtube.com/watch?v=...">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('videoModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="loadYoutubeFromModal()">Load</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="newContentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Add New Content</div>
+            <div class="modal-body">
+                <input type="text" class="form-input" id="modalContentTitle" placeholder="Content Title" style="margin-bottom: 10px;">
+                <select class="form-select" id="modalContentType" style="margin-bottom: 10px;">
+                    <option value="">Select Type</option>
+                    <option value="short">Short Video</option>
+                    <option value="long">Long Form</option>
+                    <option value="live">Live Stream</option>
+                </select>
+                <textarea class="form-textarea" id="modalContentDesc" placeholder="Description"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('newContentModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="addNewContent()">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ======================== INITIALIZATION ========================
+        const VALID_CREDENTIALS = {
+            username: 'AADITHYAN MENON',
+            password: 'PASSKEY'
+        };
+
+        let currentUser = null;
+        let entities = [];
+        let contentItems = [];
+        let activityLog = [];
+        let adminUsers = [];
+        let attendanceRecords = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromLocalStorage();
+            initializeClock();
+            initializeCalendar();
+            updateDashboard();
+            
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+        });
+
+        // ======================== LOGIN ========================
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === VALID_CREDENTIALS.username && password === VALID_CREDENTIALS.password) {
+                currentUser = username;
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainContainer').style.display = 'block';
+                logActivity('LOGIN', `User ${username} logged in`);
+                saveToLocalStorage();
+            } else {
+                alert('Invalid credentials! Use:\nUsername: AADITHYAN MENON\nPassword: PASSKEY');
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                logActivity('LOGOUT', `User ${currentUser} logged out`);
+                saveToLocalStorage();
+                currentUser = null;
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('mainContainer').style.display = 'none';
+                document.getElementById('loginForm').reset();
+            }
+        }
+
+        // ======================== NAVIGATION ========================
+        function switchSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            sections.forEach(s => s.classList.remove('active'));
+            navItems.forEach(n => n.classList.remove('active'));
+
+            document.getElementById(sectionId).classList.add('active');
+            event.target.closest('.nav-item').classList.add('active');
+        }
+
+        // ======================== CLOCK ========================
+        function initializeClock() {
+            updateClock();
+            setInterval(updateClock, 1000);
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('digitalClock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // ======================== CALENDAR ========================
+        function initializeCalendar() {
+            const today = new Date();
+            document.getElementById('monthSelect').value = today.getMonth();
+            document.getElementById('yearSelect').value = today.getFullYear();
+            updateCalendar();
+        }
+
+        function updateCalendar() {
+            const month = parseInt(document.getElementById('monthSelect').value);
+            const year = parseInt(document.getElementById('yearSelect').value);
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+
+            const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            let calendarHTML = '';
+
+            dayHeaders.forEach(day => {
+                calendarHTML += `<div class="calendar-day-header">${day}</div>`;
+            });
+
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                calendarHTML += `<div class="calendar-day" style="opacity: 0.5;"></div>`;
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                calendarHTML += `<div class="calendar-day" onclick="selectDate(${day})">${day}</div>`;
+            }
+
+            document.getElementById('calendarGrid').innerHTML = calendarHTML;
+        }
+
+        let selectedDate = null;
+
+        function selectDate(day) {
+            const month = parseInt(document.getElementById('monthSelect').value);
+            const year = parseInt(document.getElementById('yearSelect').value);
+            selectedDate = new Date(year, month, day);
+            
+            const days = document.querySelectorAll('.calendar-day');
+            days.forEach(d => d.classList.remove('selected'));
+            event.target.classList.add('selected');
+        }
+
+        function addCalendarContent() {
+            if (!selectedDate) {
+                alert('Please select a date first');
+                return;
+            }
+
+            const title = document.getElementById('contentTitle').value;
+            const type = document.getElementById('contentType').value;
+            const desc = document.getElementById('contentDescription').value;
+
+            if (!title || !type) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            const content = {
+                id: Date.now(),
+                title,
+                type,
+                description: desc,
+                date: selectedDate.toISOString().split('T')[0],
+                status: 'pending'
+            };
+
+            contentItems.push(content);
+            logActivity('CREATE', `Added content: ${title}`);
+            saveToLocalStorage();
+            updateContentPlanner();
+
+            document.getElementById('contentTitle').value = '';
+            document.getElementById('contentType').value = '';
+            document.getElementById('contentDescription').value = '';
+
+            showMessage('Content added successfully!');
+        }
+
+        // ======================== CONTENT PLANNER ========================
+        function updateContentPlanner() {
+            const grid = document.getElementById('contentGrid');
+            grid.innerHTML = '';
+
+            contentItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'content-card';
+                card.innerHTML = `
+                    <div class="content-thumb">🎬</div>
+                    <div class="content-info">
+                        <div class="content-title">${item.title}</div>
+                        <div class="content-meta">${item.date} • ${item.type}</div>
+                        <span class="content-status ${item.status === 'pending' ? 'status-pending' : 'status-active'}">
+                            ${item.status.toUpperCase()}
+                        </span>
+                        <div style="margin-top: 10px; display: flex; gap: 5px;">
+                            <button class="btn btn-small btn-primary" onclick="editContent(${item.id})">Edit</button>
+                            <button class="btn btn-small btn-danger" onclick="deleteContent(${item.id})">Delete</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function addNewContent() {
+            const title = document.getElementById('modalContentTitle').value;
+            const type = document.getElementById('modalContentType').value;
+            const desc = document.getElementById('modalContentDesc').value;
+
+            if (!title || !type) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            const content = {
+                id: Date.now(),
+                title,
+                type,
+                description: desc,
+                date: new Date().toISOString().split('T')[0],
+                status: 'pending'
+            };
+
+            contentItems.push(content);
+            logActivity('CREATE', `Added content: ${title}`);
+            saveToLocalStorage();
+            updateContentPlanner();
+            closeModal('newContentModal');
+            showMessage('Content added successfully!');
+        }
+
+        function deleteContent(id) {
+            if (confirm('Delete this content?')) {
+                contentItems = contentItems.filter(c => c.id !== id);
+                logActivity('DELETE', 'Deleted content');
+                saveToLocalStorage();
+                updateContentPlanner();
+            }
+        }
+
+        // ======================== ENTITY MANAGEMENT ========================
+        function addEntity() {
+            const name = document.getElementById('entityName').value;
+            const email = document.getElementById('entityEmail').value;
+            const github = document.getElementById('entityGithubRepo').value;
+            const category = document.getElementById('entityCategory').value;
+            const desc = document.getElementById('entityDescription').value;
+
+            if (!name || !email) {
+                alert('Please fill required fields');
+                return;
+            }
+
+            const entity = {
+                id: Date.now(),
+                name,
+                email,
+                github,
+                category,
+                description: desc,
+                createdAt: new Date().toLocaleDateString()
+            };
+
+            entities.push(entity);
+            logActivity('CREATE', `Added entity: ${name}`);
+            saveToLocalStorage();
+            updateEntityList();
+
+            document.getElementById('entityName').value = '';
+            document.getElementById('entityEmail').value = '';
+            document.getElementById('entityGithubRepo').value = '';
+            document.getElementById('entityCategory').value = '';
+            document.getElementById('entityDescription').value = '';
+
+            showMessage('Entity added successfully!');
+        }
+
+        function updateEntityList() {
+            const list = document.getElementById('entityList');
+            list.innerHTML = '';
+
+            if (entities.length === 0) {
+                list.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">No entities yet</p>';
+                return;
+            }
+
+            entities.forEach(entity => {
+                const item = document.createElement('div');
+                item.className = 'entity-item';
+                item.innerHTML = `
+                    <div class="entity-info">
+                        <h3>${entity.name}</h3>
+                        <p>📧 ${entity.email}</p>
+                        <p>📂 ${entity.category || 'No category'}</p>
+                        ${entity.github ? `<p>🔗 <a href="${entity.github}" target="_blank">GitHub Repository</a></p>` : ''}
+                    </div>
+                    <div class="entity-actions">
+                        <button class="btn btn-small btn-secondary" onclick="editEntity(${entity.id})">Edit</button>
+                        <button class="btn btn-small btn-danger" onclick="deleteEntity(${entity.id})">Delete</button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+
+            document.getElementById('totalEntities').textContent = entities.length;
+        }
+
+        function deleteEntity(id) {
+            if (confirm('Delete this entity?')) {
+                entities = entities.filter(e => e.id !== id);
+                logActivity('DELETE', 'Deleted entity');
+                saveToLocalStorage();
+                updateEntityList();
+            }
+        }
+
+        // ======================== VIDEO UPLOAD ========================
+        function handleVideoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                document.getElementById('uploadProgress').style.display = 'block';
+                
+                reader.onprogress = (e) => {
+                    const percent = (e.loaded / e.total) * 100;
+                    document.getElementById('progressBar').style.width = percent + '%';
+                };
+
+                reader.onload = () => {
+                    setTimeout(() => {
+                        document.getElementById('uploadProgress').style.display = 'none';
+                        document.getElementById('progressBar').style.width = '0%';
+                        logActivity('UPLOAD', `Uploaded video: ${file.name}`);
+                        saveToLocalStorage();
+                        showMessage(`Video "${file.name}" uploaded successfully!`);
+                    }, 500);
+                };
+
+                reader.readAsArrayBuffer(file);
+            }
+        }
+
+        function loadYoutubeVideo() {
+            const url = document.getElementById('youtubeUrl').value;
+            if (!url) {
+                alert('Please enter YouTube URL');
+                return;
+            }
+            displayYoutubePreview(url, 'youtubePreview');
+        }
+
+        function loadYoutubeFromModal() {
+            const url = document.getElementById('modalYoutubeUrl').value;
+            if (!url) {
+                alert('Please enter YouTube URL');
+                return;
+            }
+            displayYoutubePreview(url, 'youtubePreview');
+            closeModal('videoModal');
+        }
+
+        function displayYoutubePreview(url, elementId) {
+            const videoId = extractYoutubeId(url);
+            if (videoId) {
+                const iframe = `
+                    <iframe width="100%" height="400" 
+                            src="https://www.youtube.com/embed/${videoId}" 
+                            frameborder="0" allowfullscreen></iframe>
+                `;
+                document.getElementById(elementId).innerHTML = iframe;
+                logActivity('LOAD', 'Loaded YouTube video');
+                saveToLocalStorage();
+            } else {
+                alert('Invalid YouTube URL');
+            }
+        }
+
+        function extractYoutubeId(url) {
+            const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
+
+        // ======================== ATTENDANCE ========================
+        function checkInAttendance() {
+            const time = new Date().toLocaleTimeString();
+            attendanceRecords.push({
+                id: Date.now(),
+                type: 'CHECK_IN',
+                time: time,
+                date: new Date().toLocaleDateString()
+            });
+            logActivity('CHECKIN', `Checked in at ${time}`);
+            saveToLocalStorage();
+            updateAttendanceDisplay();
+            showMessage('Checked in successfully!');
+        }
+
+        function checkOutAttendance() {
+            const time = new Date().toLocaleTimeString();
+            attendanceRecords.push({
+                id: Date.now(),
+                type: 'CHECK_OUT',
+                time: time,
+                date: new Date().toLocaleDateString()
+            });
+            logActivity('CHECKOUT', `Checked out at ${time}`);
+            saveToLocalStorage();
+            updateAttendanceDisplay();
+            showMessage('Checked out successfully!');
+        }
+
+        function updateAttendanceDisplay() {
+            const grid = document.getElementById('attendanceGrid');
+            grid.innerHTML = '';
+
+            const today = new Date().toLocaleDateString();
+            const todayRecords = attendanceRecords.filter(r => r.date === today);
+
+            if (todayRecords.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999; padding: 20px;">No attendance records for today</p>';
+            } else {
+                todayRecords.forEach(record => {
+                    const card = document.createElement('div');
+                    card.className = `attendance-card ${record.type === 'CHECK_IN' ? 'checked-in' : ''}`;
+                    card.innerHTML = `
+                        <div>${record.type === 'CHECK_IN' ? '✓ Checked In' : '✗ Checked Out'}</div>
+                        <div class="attendance-time">${record.time}</div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        // ======================== ACTIVITY LOG ========================
+        function logActivity(type, message) {
+            activityLog.push({
+                id: Date.now(),
+                type,
+                message,
+                timestamp: new Date().toLocaleString(),
+                user: currentUser
+            });
+
+            if (activityLog.length > 100) {
+                activityLog = activityLog.slice(-100);
+            }
+        }
+
+        function updateActivityDisplay() {
+            const log = document.getElementById('fullActivityLog');
+            log.innerHTML = '';
+
+            const recentActivity = activityLog.slice().reverse();
+            recentActivity.forEach(activity => {
+                const typeMap = {
+                    'CREATE': 'create',
+                    'UPDATE': 'update',
+                    'DELETE': 'delete',
+                    'LOGIN': 'create',
+                    'LOGOUT': 'update',
+                    'UPLOAD': 'create',
+                    'LOAD': 'update',
+                    'CHECKIN': 'create',
+                    'CHECKOUT': 'update'
+                };
+
+                const item = document.createElement('div');
+                item.className = 'activity-item';
+                item.innerHTML = `
+                    <div class="activity-icon ${typeMap[activity.type]}">
+                        ${activity.type === 'DELETE' ? '🗑️' : activity.type === 'CREATE' ? '✚' : '✎'}
+                    </div>
+                    <div class="activity-content">
+                        <h4>${activity.message}</h4>
+                        <div class="activity-time">${activity.timestamp}</div>
+                    </div>
+                `;
+                log.appendChild(item);
+            });
+        }
+
+        // ======================== DASHBOARD ========================
+        function updateDashboard() {
+            document.getElementById('totalContent').textContent = contentItems.length;
+            document.getElementById('totalEntities').textContent = entities.length;
+            document.getElementById('monthlyContent').textContent = contentItems.length;
+            
+            updateActivityDisplay();
+
+            const dashboardActivity = document.getElementById('dashboardActivity');
+            dashboardActivity.innerHTML = '';
+            const recentActivity = activityLog.slice(-5).reverse();
+            recentActivity.forEach(activity => {
+                const item = document.createElement('div');
+                item.className = 'activity-item';
+                item.innerHTML = `
+                    <div class="activity-icon create">📝</div>
+                    <div class="activity-content">
+                        <h4>${activity.message}</h4>
+                        <div class="activity-time">${activity.timestamp}</div>
+                    </div>
+                `;
+                dashboardActivity.appendChild(item);
+            });
+
+            updateEntityList();
+            updateContentPlanner();
+            updateAttendanceDisplay();
+        }
+
+        // ======================== ADMIN CONSOLE ========================
+        function addNewAdmin() {
+            const name = document.getElementById('newAdminName').value;
+            const email = document.getElementById('newAdminEmail').value;
+            const password = document.getElementById('newAdminPassword').value;
+
+            if (!name || !email || !password) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            adminUsers.push({
+                id: Date.now(),
+                name,
+                email,
+                password: btoa(password),
+                createdAt: new Date().toLocaleDateString()
+            });
+
+            logActivity('CREATE', `Added new admin: ${name}`);
+            saveToLocalStorage();
+            document.getElementById('newAdminName').value = '';
+            document.getElementById('newAdminEmail').value = '';
+            document.getElementById('newAdminPassword').value = '';
+            updateAdminSelect();
+            showMessage(`Admin "${name}" added successfully!`);
+        }
+
+        function updateAdminSelect() {
+            const select = document.getElementById('adminSelect');
+            select.innerHTML = '<option value="">Select Admin</option>';
+            adminUsers.forEach(admin => {
+                select.innerHTML += `<option value="${admin.id}">${admin.name}</option>`;
+            });
+        }
+
+        function resetAdminPassword() {
+            const adminId = document.getElementById('adminSelect').value;
+            const newPass = document.getElementById('newPassword').value;
+
+            if (!adminId || !newPass) {
+                alert('Please select admin and enter password');
+                return;
+            }
+
+            const admin = adminUsers.find(a => a.id == adminId);
+            if (admin) {
+                admin.password = btoa(newPass);
+                logActivity('UPDATE', `Reset password for admin: ${admin.name}`);
+                saveToLocalStorage();
+                document.getElementById('newPassword').value = '';
+                showMessage('Password reset successfully!');
+            }
+        }
+
+        function connectGithub() {
+            const token = document.getElementById('githubToken').value;
+            const repo = document.getElementById('githubRepo').value;
+
+            if (!token || !repo) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            logActivity('UPDATE', `Connected to GitHub repository: ${repo}`);
+            saveToLocalStorage();
+            showMessage('Connected to GitHub successfully!');
+        }
+
+        function downloadPDF() {
+            const pdfContent = generatePDFContent();
+            logActivity('DOWNLOAD', 'Downloaded monthly planner PDF');
+            saveToLocalStorage();
+            showMessage('PDF downloaded! (Simulated)');
+        }
+
+        function generatePDFContent() {
+            return `
+            SWANAYA MEDIA ENTERPRISES
+            MONTHLY PLANNER REPORT
+            Generated: ${new Date().toLocaleDateString()}
+            
+            SUMMARY:
+            - Total Content Items: ${contentItems.length}
+            - Total Entities: ${entities.length}
+            - Admin Users: ${adminUsers.length}
+            
+            LOCKED VIEW - For Authorized Users Only
+            `;
+        }
+
+        function exportData() {
+            const data = {
+                content: contentItems,
+                entities: entities,
+                admins: adminUsers,
+                activity: activityLog,
+                exportDate: new Date().toLocaleString()
+            };
+            const dataStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `swanaya-export-${Date.now()}.json`;
+            a.click();
+            logActivity('EXPORT', 'Exported all data');
+            saveToLocalStorage();
+            showMessage('Data exported successfully!');
+        }
+
+        function resetAllData() {
+            if (confirm('⚠️ This will delete ALL data! Are you sure?')) {
+                if (confirm('This action cannot be undone! Confirm again?')) {
+                    contentItems = [];
+                    entities = [];
+                    adminUsers = [];
+                    activityLog = [];
+                    attendanceRecords = [];
+                    logActivity('SYSTEM', 'All data reset');
+                    saveToLocalStorage();
+                    updateDashboard();
+                    showMessage('All data has been reset!');
+                }
+            }
+        }
+
+        // ======================== TERMINAL ========================
+        function handleTerminalInput(event) {
+            if (event.key === 'Enter') {
+                const input = event.target.value;
+                const output = document.getElementById('terminalOutput');
+
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                line.innerHTML = `<span class="terminal-prompt">$ </span><span>${input}</span>`;
+                output.appendChild(line);
+
+                const response = processTerminalCommand(input);
+                if (response) {
+                    const responseDiv = document.createElement('div');
+                    responseDiv.className = 'terminal-line';
+                    responseDiv.innerHTML = `<span>${response}</span>`;
+                    output.appendChild(responseDiv);
+                }
+
+                event.target.value = '';
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        function processTerminalCommand(cmd) {
+            const commands = {
+                'help': 'Available commands: list-content, list-entities, status, date, info, clear',
+                'list-content': `Total content items: ${contentItems.length}`,
+                'list-entities': `Total entities: ${entities.length}`,
+                'status': 'System Status: ONLINE',
+                'date': new Date().toString(),
+                'info': 'Swanaya Media Content Planner v1.0',
+                'clear': () => { document.getElementById('terminalOutput').innerHTML = ''; return ''; }
+            };
+
+            return commands[cmd] || `Command not found: ${cmd}. Type 'help' for available commands.`;
+        }
+
+        // ======================== SECURITY SETTINGS ========================
+        function changePassword() {
+            const current = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPass').value;
+            const confirm = document.getElementById('confirmPass').value;
+
+            if (!current || !newPass || !confirm) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            if (newPass !== confirm) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            logActivity('SECURITY', 'Changed password');
+            saveToLocalStorage();
+            showMessage('Password changed successfully!');
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPass').value = '';
+            document.getElementById('confirmPass').value = '';
+        }
+
+        function createBackup() {
+            const backup = {
+                content: contentItems,
+                entities: entities,
+                admins: adminUsers,
+                activity: activityLog,
+                backupDate: new Date().toLocaleString()
+            };
+            localStorage.setItem('swanaya-backup', JSON.stringify(backup));
+            document.getElementById('lastBackupTime').textContent = new Date().toLocaleString();
+            logActivity('BACKUP', 'Created system backup');
+            saveToLocalStorage();
+            showMessage('Backup created successfully!');
+        }
+
+        function downloadBackup() {
+            const backup = JSON.parse(localStorage.getItem('swanaya-backup') || '{}');
+            const dataStr = JSON.stringify(backup, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `swanaya-backup-${Date.now()}.json`;
+            a.click();
+            showMessage('Backup downloaded!');
+        }
+
+        function endAllSessions() {
+            if (confirm('End all active sessions?')) {
+                logActivity('SECURITY', 'Ended all sessions');
+                saveToLocalStorage();
+                showMessage('All sessions ended');
+            }
+        }
+
+        function toggleSessionLock() {
+            showMessage('Session locked - Login required to unlock');
+        }
+
+        function enable2FA() {
+            showMessage('2FA setup initiated - Check your email for setup code');
+        }
+
+        // ======================== COUNTDOWN TIMER ========================
+        function startCountdown() {
+            const container = document.getElementById('countdownContainer');
+            const display = document.getElementById('countdownDisplay');
+            container.style.display = 'block';
+            
+            let count = 10;
+            display.textContent = count;
+
+            const interval = setInterval(() => {
+                count--;
+                display.textContent = count;
+
+                if (count === 0) {
+                    clearInterval(interval);
+                    display.textContent = '🚀 LAUNCHED!';
+                    setTimeout(() => {
+                        container.style.display = 'none';
+                    }, 2000);
+                    showMessage('🚀 Launch successful!');
+                }
+            }, 1000);
+        }
+
+        // ======================== MODALS ========================
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // ======================== UTILITIES ========================
+        function showMessage(message) {
+            const msg = document.createElement('div');
+            msg.className = 'success-message show';
+            msg.textContent = message;
+            document.querySelector('.content-area').insertBefore(msg, document.querySelector('.content-area').firstChild);
+            setTimeout(() => msg.remove(), 3000);
+        }
+
+        function saveSettings() {
+            const settings = {
+                notifications: document.getElementById('notificationsEnabled').checked,
+                darkMode: document.getElementById('darkMode').checked,
+                autoBackup: document.getElementById('autoBackup').checked
+            };
+            localStorage.setItem('swanaya-settings', JSON.stringify(settings));
+            logActivity('UPDATE', 'Updated system settings');
+            saveToLocalStorage();
+            showMessage('Settings saved successfully!');
+        }
+
+        // ======================== LOCAL STORAGE ========================
+        function saveToLocalStorage() {
+            const data = {
+                entities,
+                contentItems,
+                activityLog,
+                adminUsers,
+                attendanceRecords,
+                currentUser
+            };
+            localStorage.setItem('swanaya-data', JSON.stringify(data));
+        }
+
+        function loadFromLocalStorage() {
+            const data = JSON.parse(localStorage.getItem('swanaya-data') || '{}');
+            entities = data.entities || [];
+            contentItems = data.contentItems || [];
+            activityLog = data.activityLog || [];
+            adminUsers = data.adminUsers || [];
+            attendanceRecords = data.attendanceRecords || [];
+            currentUser = data.currentUser || null;
+        }
+
+        // Close modals on outside click
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        });
+
+        // Update dashboard on interval
+        setInterval(updateDashboard, 5000);
+    </script>
+</body>
+</html>

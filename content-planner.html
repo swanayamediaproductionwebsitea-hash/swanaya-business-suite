@@ -934,6 +934,57 @@
         .error-message.show {
             display: block;
         }
+
+        /* Registration Styles */
+        .auth-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #999;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .auth-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .register-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -945,7 +996,15 @@
                 <h1>SWANAYA MEDIA</h1>
                 <p>Content Planner System</p>
             </div>
-            <form id="loginForm">
+
+            <!-- Auth Toggle -->
+            <div class="auth-toggle">
+                <div class="auth-tab active" onclick="switchAuthMode('login')">Login</div>
+                <div class="auth-tab" onclick="switchAuthMode('register')">Register</div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form active">
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" placeholder="Enter username" required>
@@ -956,6 +1015,32 @@
                 </div>
                 <button type="submit" class="login-btn">Login</button>
             </form>
+
+            <!-- Registration Form -->
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="regFullName">Full Name</label>
+                    <input type="text" id="regFullName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="regUsername">Username</label>
+                    <input type="text" id="regUsername" placeholder="Create a username" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" placeholder="Create a password" required>
+                </div>
+                <div class="form-group">
+                    <label for="regConfirmPassword">Confirm Password</label>
+                    <input type="password" id="regConfirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="login-btn">Register</button>
+            </form>
+
             <p style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
                 Demo: Username: AADITHYAN MENON | Password: PASSKEY
             </p>
@@ -1411,6 +1496,7 @@
         let activityLog = [];
         let adminUsers = [];
         let attendanceRecords = [];
+        let registeredUsers = [];
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
@@ -1420,7 +1506,87 @@
             updateDashboard();
             
             document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('registerForm').addEventListener('submit', handleRegister);
         });
+
+        // ======================== AUTHENTICATION MODE ========================
+        function switchAuthMode(mode) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const authTabs = document.querySelectorAll('.auth-tab');
+
+            authTabs.forEach(tab => tab.classList.remove('active'));
+
+            if (mode === 'login') {
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+                authTabs[0].classList.add('active');
+                loginForm.reset();
+            } else {
+                loginForm.classList.remove('active');
+                registerForm.classList.add('active');
+                authTabs[1].classList.add('active');
+                registerForm.reset();
+            }
+        }
+
+        // ======================== REGISTRATION ========================
+        function handleRegister(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('regFullName').value;
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+            // Validation
+            if (!fullName || !username || !email || !password || !confirmPassword) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long');
+                return;
+            }
+
+            // Check if username already exists
+            if (registeredUsers.some(u => u.username === username)) {
+                alert('Username already taken! Please choose a different one.');
+                return;
+            }
+
+            if (registeredUsers.some(u => u.email === email)) {
+                alert('Email already registered! Please use a different email.');
+                return;
+            }
+
+            // Create new user
+            const newUser = {
+                id: Date.now(),
+                fullName,
+                username,
+                email,
+                password: btoa(password), // Basic encoding (not secure for production)
+                createdAt: new Date().toLocaleString(),
+                role: 'user'
+            };
+
+            registeredUsers.push(newUser);
+            saveToLocalStorage();
+
+            // Success message
+            alert(`✅ Registration successful!\n\nWelcome, ${fullName}!\n\nYou can now login with your credentials.`);
+
+            // Clear form and switch back to login
+            document.getElementById('registerForm').reset();
+            switchAuthMode('login');
+        }
 
         // ======================== LOGIN ========================
         function handleLogin(e) {
@@ -1428,15 +1594,30 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
+            // Check demo account
             if (username === VALID_CREDENTIALS.username && password === VALID_CREDENTIALS.password) {
                 currentUser = username;
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('mainContainer').style.display = 'block';
                 logActivity('LOGIN', `User ${username} logged in`);
                 saveToLocalStorage();
-            } else {
-                alert('Invalid credentials! Use:\nUsername: AADITHYAN MENON\nPassword: PASSKEY');
+                document.getElementById('userDisplay').textContent = username;
+                return;
             }
+
+            // Check registered users
+            const user = registeredUsers.find(u => u.username === username);
+            if (user && atob(user.password) === password) {
+                currentUser = user.fullName;
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainContainer').style.display = 'block';
+                logActivity('LOGIN', `User ${user.fullName} (${username}) logged in`);
+                saveToLocalStorage();
+                document.getElementById('userDisplay').textContent = user.fullName;
+                return;
+            }
+
+            alert('Invalid credentials! Please check your username and password.');
         }
 
         function logout() {
@@ -2185,6 +2366,7 @@
                 activityLog,
                 adminUsers,
                 attendanceRecords,
+                registeredUsers,
                 currentUser
             };
             localStorage.setItem('swanaya-data', JSON.stringify(data));
@@ -2197,6 +2379,7 @@
             activityLog = data.activityLog || [];
             adminUsers = data.adminUsers || [];
             attendanceRecords = data.attendanceRecords || [];
+            registeredUsers = data.registeredUsers || [];
             currentUser = data.currentUser || null;
         }
 
